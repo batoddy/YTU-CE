@@ -1,0 +1,40 @@
+$date
+	Fri Mar 15 14:54:59 2024
+$end
+$version
+	Icarus Verilog
+$end
+$timescale
+	1ns
+$end
+$scope module mux_2x1_32_bh_tb $end
+$var wire 32 ! out [31:0] $end
+$var reg 32 " a [31:0] $end
+$var reg 32 # b [31:0] $end
+$var reg 1 $ select $end
+$scope module UUT $end
+$var wire 32 % a [31:0] $end
+$var wire 32 & b [31:0] $end
+$var wire 1 $ select $end
+$var wire 32 ' out [31:0] $end
+$upscope $end
+$upscope $end
+$enddefinitions $end
+$comment Show the parameter values. $end
+$dumpall
+$end
+#0
+$dumpvars
+b10010001101000101011001111000 '
+b10010001101000101011001111000 &
+b10101011110011011110111111110000 %
+0$
+b10010001101000101011001111000 #
+b10101011110011011110111111110000 "
+b10010001101000101011001111000 !
+$end
+#10
+b10101011110011011110111111110000 !
+b10101011110011011110111111110000 '
+1$
+#20

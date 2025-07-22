@@ -1,0 +1,3 @@
+iverilog -o riscv_sim.vvp riscv_single.v controller.v maindec.v aludec.v datapath.v adder.v extend.v flopr.v flopenr.v mux2.v mux3.v imem.v dmem.v alu.v regfile.v top.v testbench.v
+
+vvp riscv_sim.vvp

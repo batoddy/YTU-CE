@@ -1,0 +1,126 @@
+$date
+	Fri Mar 15 13:06:51 2024
+$end
+$version
+	Icarus Verilog
+$end
+$timescale
+	1ns
+$end
+$scope module add4_tb $end
+$var wire 4 ! s [3:0] $end
+$var wire 1 " co $end
+$var reg 4 # a [3:0] $end
+$var reg 4 $ b [3:0] $end
+$var reg 1 % ci $end
+$scope module uut $end
+$var wire 4 & a [3:0] $end
+$var wire 4 ' b [3:0] $end
+$var wire 1 % ci $end
+$var wire 4 ( s [3:0] $end
+$var wire 1 " co $end
+$var wire 3 ) c [2:0] $end
+$scope module a0 $end
+$var wire 1 * a $end
+$var wire 1 + b $end
+$var wire 1 % ci $end
+$var wire 1 , co $end
+$var wire 1 - s $end
+$upscope $end
+$scope module a1 $end
+$var wire 1 . a $end
+$var wire 1 / b $end
+$var wire 1 0 ci $end
+$var wire 1 1 co $end
+$var wire 1 2 s $end
+$upscope $end
+$scope module a2 $end
+$var wire 1 3 a $end
+$var wire 1 4 b $end
+$var wire 1 5 ci $end
+$var wire 1 6 co $end
+$var wire 1 7 s $end
+$upscope $end
+$scope module a3 $end
+$var wire 1 8 a $end
+$var wire 1 9 b $end
+$var wire 1 : ci $end
+$var wire 1 " co $end
+$var wire 1 ; s $end
+$upscope $end
+$upscope $end
+$upscope $end
+$enddefinitions $end
+$comment Show the parameter values. $end
+$dumpall
+$end
+#0
+$dumpvars
+0;
+0:
+09
+08
+07
+06
+05
+04
+03
+02
+01
+00
+0/
+0.
+0-
+0,
+0+
+0*
+b0 )
+b0 (
+b0 '
+b0 &
+0%
+b0 $
+b0 #
+0"
+b0 !
+$end
+#10
+1-
+17
+12
+b1111 !
+b1111 (
+1;
+1+
+14
+1.
+18
+b101 $
+b101 '
+b1010 #
+b1010 &
+#20
+15
+1:
+11
+1"
+16
+10
+12
+1;
+17
+b111 )
+1,
+b1111 !
+b1111 (
+1-
+1/
+19
+1*
+13
+1%
+b1111 $
+b1111 '
+b1111 #
+b1111 &
+#30

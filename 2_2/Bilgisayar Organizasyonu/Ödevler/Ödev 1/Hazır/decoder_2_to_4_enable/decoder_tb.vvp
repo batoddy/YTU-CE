@@ -1,0 +1,96 @@
+#! /c/Source/iverilog-install/bin/vvp
+:ivl_version "12.0 (devel)" "(s20150603-1539-g2693dd32b)";
+:ivl_delay_selection "TYPICAL";
+:vpi_time_precision + 0;
+:vpi_module "C:\iverilog\lib\ivl\system.vpi";
+:vpi_module "C:\iverilog\lib\ivl\vhdl_sys.vpi";
+:vpi_module "C:\iverilog\lib\ivl\vhdl_textio.vpi";
+:vpi_module "C:\iverilog\lib\ivl\v2005_math.vpi";
+:vpi_module "C:\iverilog\lib\ivl\va_math.vpi";
+S_000002df9572c650 .scope module, "decoder_tb" "decoder_tb" 2 5;
+ .timescale 0 0;
+v000002df95771050_0 .var "A0", 0 0;
+v000002df957708d0_0 .var "A1", 0 0;
+v000002df95770a10_0 .net "D0", 0 0, L_000002df95771d50;  1 drivers
+v000002df95770ab0_0 .net "D1", 0 0, L_000002df957717a0;  1 drivers
+v000002df95770dd0_0 .net "D2", 0 0, L_000002df95771ea0;  1 drivers
+v000002df95770b50_0 .net "D3", 0 0, L_000002df957718f0;  1 drivers
+v000002df95770e70_0 .var "EN", 0 0;
+S_000002df9572c7e0 .scope module, "uut" "decoder_df" 2 14, 3 1 0, S_000002df9572c650;
+ .timescale 0 0;
+    .port_info 0 /INPUT 1 "EN";
+    .port_info 1 /INPUT 1 "A0";
+    .port_info 2 /INPUT 1 "A1";
+    .port_info 3 /OUTPUT 1 "D0";
+    .port_info 4 /OUTPUT 1 "D1";
+    .port_info 5 /OUTPUT 1 "D2";
+    .port_info 6 /OUTPUT 1 "D3";
+L_000002df957c38e0 .functor NOT 1, v000002df957708d0_0, C4<0>, C4<0>, C4<0>;
+L_000002df957c3950 .functor AND 1, v000002df95770e70_0, L_000002df957c38e0, C4<1>, C4<1>;
+L_000002df95771ce0 .functor NOT 1, v000002df95771050_0, C4<0>, C4<0>, C4<0>;
+L_000002df95771d50 .functor AND 1, L_000002df957c3950, L_000002df95771ce0, C4<1>, C4<1>;
+L_000002df95771dc0 .functor NOT 1, v000002df957708d0_0, C4<0>, C4<0>, C4<0>;
+L_000002df95771c00 .functor AND 1, v000002df95770e70_0, L_000002df95771dc0, C4<1>, C4<1>;
+L_000002df957717a0 .functor AND 1, L_000002df95771c00, v000002df95771050_0, C4<1>, C4<1>;
+L_000002df95771880 .functor AND 1, v000002df95770e70_0, v000002df957708d0_0, C4<1>, C4<1>;
+L_000002df95771810 .functor NOT 1, v000002df95771050_0, C4<0>, C4<0>, C4<0>;
+L_000002df95771ea0 .functor AND 1, L_000002df95771880, L_000002df95771810, C4<1>, C4<1>;
+L_000002df957719d0 .functor AND 1, v000002df95770e70_0, v000002df957708d0_0, C4<1>, C4<1>;
+L_000002df957718f0 .functor AND 1, L_000002df957719d0, v000002df95771050_0, C4<1>, C4<1>;
+v000002df9572c970_0 .net "A0", 0 0, v000002df95771050_0;  1 drivers
+v000002df95726720_0 .net "A1", 0 0, v000002df957708d0_0;  1 drivers
+v000002df9572ca10_0 .net "D0", 0 0, L_000002df95771d50;  alias, 1 drivers
+v000002df957c3840_0 .net "D1", 0 0, L_000002df957717a0;  alias, 1 drivers
+v000002df95770970_0 .net "D2", 0 0, L_000002df95771ea0;  alias, 1 drivers
+v000002df95771690_0 .net "D3", 0 0, L_000002df957718f0;  alias, 1 drivers
+v000002df95770830_0 .net "EN", 0 0, v000002df95770e70_0;  1 drivers
+v000002df95771410_0 .net *"_ivl_0", 0 0, L_000002df957c38e0;  1 drivers
+v000002df957714b0_0 .net *"_ivl_10", 0 0, L_000002df95771c00;  1 drivers
+v000002df957712d0_0 .net *"_ivl_14", 0 0, L_000002df95771880;  1 drivers
+v000002df95771370_0 .net *"_ivl_16", 0 0, L_000002df95771810;  1 drivers
+v000002df95771550_0 .net *"_ivl_2", 0 0, L_000002df957c3950;  1 drivers
+v000002df957715f0_0 .net *"_ivl_20", 0 0, L_000002df957719d0;  1 drivers
+v000002df95770790_0 .net *"_ivl_4", 0 0, L_000002df95771ce0;  1 drivers
+v000002df95770d30_0 .net *"_ivl_8", 0 0, L_000002df95771dc0;  1 drivers
+    .scope S_000002df9572c650;
+T_0 ;
+    %pushi/vec4 0, 0, 1;
+    %store/vec4 v000002df95770e70_0, 0, 1;
+    %pushi/vec4 0, 0, 1;
+    %store/vec4 v000002df95771050_0, 0, 1;
+    %pushi/vec4 0, 0, 1;
+    %store/vec4 v000002df957708d0_0, 0, 1;
+    %vpi_call 2 30 "$display", "Test Case 1: EN = 0, A0 = 0, A1 = 0" {0 0 0};
+    %delay 5, 0;
+    %vpi_call 2 33 "$display", "Test Case 2: EN = 1, A0 = 0, A1 = 0" {0 0 0};
+    %pushi/vec4 1, 0, 1;
+    %store/vec4 v000002df95770e70_0, 0, 1;
+    %delay 5, 0;
+    %vpi_call 2 37 "$display", "Test Case 3: EN = 1, A0 = 1, A1 = 0" {0 0 0};
+    %pushi/vec4 1, 0, 1;
+    %store/vec4 v000002df95771050_0, 0, 1;
+    %delay 5, 0;
+    %vpi_call 2 41 "$display", "Test Case 4: EN = 1, A0 = 0, A1 = 1" {0 0 0};
+    %pushi/vec4 0, 0, 1;
+    %store/vec4 v000002df95771050_0, 0, 1;
+    %pushi/vec4 1, 0, 1;
+    %store/vec4 v000002df957708d0_0, 0, 1;
+    %delay 5, 0;
+    %vpi_call 2 46 "$display", "Test Case 5: EN = 1, A0 = 1, A1 = 1" {0 0 0};
+    %pushi/vec4 1, 0, 1;
+    %store/vec4 v000002df95771050_0, 0, 1;
+    %delay 5, 0;
+    %end;
+    .thread T_0;
+    .scope S_000002df9572c650;
+T_1 ;
+    %vpi_call 2 52 "$dumpfile", "decoder_tb.vcd" {0 0 0};
+    %vpi_call 2 53 "$dumpvars", 32'sb00000000000000000000000000000000, S_000002df9572c650 {0 0 0};
+    %end;
+    .thread T_1;
+# The file index is used to find the file name in the following table.
+:file_names 4;
+    "N/A";
+    "<interactive>";
+    "decoder_tb.v";
+    "./decoder_df.v";

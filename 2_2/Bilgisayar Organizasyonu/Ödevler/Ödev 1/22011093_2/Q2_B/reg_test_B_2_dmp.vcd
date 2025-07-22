@@ -1,0 +1,358 @@
+$date
+	Mon Apr 14 15:00:58 2025
+$end
+$version
+	Icarus Verilog
+$end
+$timescale
+	1ps
+$end
+$scope module TB_datapath $end
+$var wire 32 ! valA [31:0] $end
+$var wire 32 " valB [31:0] $end
+$var wire 1 # Zero $end
+$var wire 32 $ Result [31:0] $end
+$var wire 1 % Overflow $end
+$var reg 3 & ALUControl [2:0] $end
+$var reg 2 ' addr1 [1:0] $end
+$var reg 2 ( addr2 [1:0] $end
+$var reg 2 ) addr3 [1:0] $end
+$var reg 1 * clk $end
+$var reg 1 + rst $end
+$var reg 1 , wr $end
+$scope module uut $end
+$var wire 3 - ALUControl [2:0] $end
+$var wire 2 . addr1 [1:0] $end
+$var wire 2 / addr2 [1:0] $end
+$var wire 2 0 addr3 [1:0] $end
+$var wire 1 * clk $end
+$var wire 1 + rst $end
+$var wire 1 , wr $end
+$var wire 32 1 data2 [31:0] $end
+$var wire 32 2 data1 [31:0] $end
+$var wire 1 # Zero $end
+$var wire 32 3 Result [31:0] $end
+$var wire 1 % Overflow $end
+$scope module RF $end
+$var wire 2 4 addr1 [1:0] $end
+$var wire 2 5 addr2 [1:0] $end
+$var wire 2 6 addr3 [1:0] $end
+$var wire 1 * clk $end
+$var wire 32 7 data1 [31:0] $end
+$var wire 32 8 data2 [31:0] $end
+$var wire 1 + rst $end
+$var wire 1 , wr $end
+$var wire 32 9 data3 [31:0] $end
+$upscope $end
+$scope module alu $end
+$var wire 32 : A [31:0] $end
+$var wire 3 ; ALUControl [2:0] $end
+$var wire 32 < B [31:0] $end
+$var wire 32 = or_Result [31:0] $end
+$var wire 32 > and_Result [31:0] $end
+$var wire 1 # Zero $end
+$var wire 32 ? Sum [31:0] $end
+$var wire 32 @ Result [31:0] $end
+$var wire 1 % Overflow $end
+$var wire 1 A LT_1 $end
+$var wire 32 B LT [31:0] $end
+$var wire 1 C Cout $end
+$var wire 32 D Bnot [31:0] $end
+$var wire 32 E B_mux [31:0] $end
+$scope module adder $end
+$var wire 32 F A [31:0] $end
+$var wire 1 G Cin $end
+$var wire 32 H Sum [31:0] $end
+$var wire 1 C Cout $end
+$var wire 32 I B [31:0] $end
+$upscope $end
+$scope module and_gate $end
+$var wire 32 J A [31:0] $end
+$var wire 32 K B [31:0] $end
+$var wire 32 L Result [31:0] $end
+$upscope $end
+$scope module mux $end
+$var wire 32 M in0 [31:0] $end
+$var wire 32 N in1 [31:0] $end
+$var wire 32 O in2 [31:0] $end
+$var wire 32 P in4 [31:0] $end
+$var wire 32 Q in6 [31:0] $end
+$var wire 32 R in7 [31:0] $end
+$var wire 3 S sel [2:0] $end
+$var wire 32 T in5 [31:0] $end
+$var wire 32 U in3 [31:0] $end
+$var reg 32 V out [31:0] $end
+$upscope $end
+$scope module mux_1_2 $end
+$var wire 32 W a [31:0] $end
+$var wire 1 X sel $end
+$var wire 32 Y y [31:0] $end
+$var wire 32 Z b [31:0] $end
+$upscope $end
+$scope module not_gate $end
+$var wire 32 [ A [31:0] $end
+$var wire 32 \ Result [31:0] $end
+$upscope $end
+$scope module or_gate $end
+$var wire 32 ] A [31:0] $end
+$var wire 32 ^ B [31:0] $end
+$var wire 32 _ Result [31:0] $end
+$upscope $end
+$scope module slt $end
+$var wire 1 ` A $end
+$var wire 3 a ALUControl [2:0] $end
+$var wire 1 b B $end
+$var wire 1 A LT $end
+$var wire 1 % Overflow $end
+$var wire 1 c Sum $end
+$var wire 1 d gate1 $end
+$var wire 1 e gate2 $end
+$var wire 1 f gate3 $end
+$upscope $end
+$scope module zero_extender $end
+$var wire 1 A in $end
+$var wire 32 g out [31:0] $end
+$upscope $end
+$upscope $end
+$upscope $end
+$upscope $end
+$enddefinitions $end
+$comment Show the parameter values. $end
+$dumpall
+$end
+#0
+$dumpvars
+b0x g
+xf
+xe
+xd
+xc
+xb
+bx a
+x`
+bx _
+bx ^
+bx ]
+bx \
+bx [
+bx Z
+bx Y
+xX
+bx W
+b0 V
+bx U
+b0x T
+bx S
+b0 R
+b0 Q
+b0 P
+bx O
+bx N
+bx M
+bx L
+bx K
+bx J
+bx I
+bx H
+xG
+bx F
+bx E
+bx D
+xC
+b0x B
+xA
+b0 @
+bx ?
+bx >
+bx =
+bx <
+bx ;
+bx :
+b0 9
+bx 8
+bx 7
+bx 6
+bx 5
+bx 4
+b0 3
+bx 2
+bx 1
+bx 0
+bx /
+bx .
+bx -
+0,
+0+
+0*
+bx )
+bx (
+bx '
+bx &
+x%
+b0 $
+1#
+bx "
+bx !
+$end
+#5000
+1*
+#10000
+0*
+#15000
+b0 B
+b0 T
+b0 g
+0A
+0%
+1e
+0c
+0d
+b0 ?
+b0 H
+b0 M
+b0 N
+1C
+1#
+1f
+1b
+b1100101010000110010000100001111 E
+b1100101010000110010000100001111 I
+b1100101010000110010000100001111 Y
+b1100101010000110010000100001111 D
+b1100101010000110010000100001111 Z
+b1100101010000110010000100001111 \
+1`
+b10011010101111001101111011110000 >
+b10011010101111001101111011110000 L
+b10011010101111001101111011110000 O
+b10011010101111001101111011110000 =
+b10011010101111001101111011110000 U
+b10011010101111001101111011110000 _
+1X
+1G
+b0 $
+b0 3
+b0 9
+b0 @
+b0 V
+1,
+b1 )
+b1 0
+b1 6
+b10011010101111001101111011110000 "
+b10011010101111001101111011110000 1
+b10011010101111001101111011110000 8
+b10011010101111001101111011110000 <
+b10011010101111001101111011110000 K
+b10011010101111001101111011110000 W
+b10011010101111001101111011110000 [
+b10011010101111001101111011110000 ^
+b1 (
+b1 /
+b1 5
+b10011010101111001101111011110000 !
+b10011010101111001101111011110000 2
+b10011010101111001101111011110000 7
+b10011010101111001101111011110000 :
+b10011010101111001101111011110000 F
+b10011010101111001101111011110000 J
+b10011010101111001101111011110000 ]
+b1 '
+b1 .
+b1 4
+b1 &
+b1 -
+b1 ;
+b1 S
+b1 a
+#20000
+1#
+0e
+b11111111111111111111111111111111 E
+b11111111111111111111111111111111 I
+b11111111111111111111111111111111 Y
+b0 $
+b0 3
+b0 9
+b0 @
+b0 V
+0`
+b0 ?
+b0 H
+b0 M
+b0 N
+1C
+0b
+b0 >
+b0 L
+b0 O
+b11111111111111111111111111111111 D
+b11111111111111111111111111111111 Z
+b11111111111111111111111111111111 \
+b0 =
+b0 U
+b0 _
+b0 2
+b0 7
+b0 :
+b0 F
+b0 J
+b0 ]
+b0 1
+b0 8
+b0 <
+b0 K
+b0 W
+b0 [
+b0 ^
+b0 "
+b0 !
+1*
+#25000
+1e
+b1 B
+b1 T
+b1 g
+1A
+0#
+1c
+b11111111111111111111111111111111 $
+b11111111111111111111111111111111 3
+b11111111111111111111111111111111 9
+b11111111111111111111111111111111 @
+b11111111111111111111111111111111 V
+b11111111111111111111111111111111 ?
+b11111111111111111111111111111111 H
+b11111111111111111111111111111111 M
+b11111111111111111111111111111111 N
+0C
+b11111111111111111111111111111110 E
+b11111111111111111111111111111110 I
+b11111111111111111111111111111110 Y
+b11111111111111111111111111111110 D
+b11111111111111111111111111111110 Z
+b11111111111111111111111111111110 \
+b1 =
+b1 U
+b1 _
+b0 )
+b0 0
+b0 6
+b1 "
+b1 1
+b1 8
+b1 <
+b1 K
+b1 W
+b1 [
+b1 ^
+b11 (
+b11 /
+b11 5
+1,
+0*
+#30000
+1*
+#35000
+0,
+0*

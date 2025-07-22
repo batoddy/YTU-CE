@@ -1,0 +1,74 @@
+$date
+	Fri Mar 15 14:48:58 2024
+$end
+$version
+	Icarus Verilog
+$end
+$timescale
+	1s
+$end
+$scope module mux_2x1_1_st_tb $end
+$var wire 1 ! out $end
+$var reg 1 " a $end
+$var reg 1 # b $end
+$var reg 1 $ select $end
+$scope module UUT $end
+$var wire 1 " a $end
+$var wire 1 % and_1 $end
+$var wire 1 & and_2 $end
+$var wire 1 # b $end
+$var wire 1 ! out $end
+$var wire 1 $ select $end
+$var wire 1 ' select_not $end
+$upscope $end
+$upscope $end
+$enddefinitions $end
+$comment Show the parameter values. $end
+$dumpall
+$end
+#0
+$dumpvars
+1'
+0&
+0%
+0$
+0#
+0"
+0!
+$end
+#10
+0'
+1$
+#20
+1!
+1&
+1'
+1#
+0$
+#30
+0!
+0&
+0'
+1$
+#40
+1'
+0#
+1"
+0$
+#50
+1!
+0'
+1%
+1$
+#60
+1&
+1'
+0%
+1#
+0$
+#70
+0&
+0'
+1%
+1$
+#90
