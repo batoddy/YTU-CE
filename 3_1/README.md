@@ -18,6 +18,7 @@ Hoca tahtadan işliyor, Kaynak: yıldız online ders kayıtları
 
 Teams: 2526G_BLM3061_MSAD
 Teams bozulmuş, düzelince ekleyeceğim
+Dosbox terminal komutları: https://github.com/batoddy/YTU-CE/blob/main/3_1/Mikroislemci/README.md
 
 ## Veritabanı Yönetimi
 
