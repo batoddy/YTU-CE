@@ -5,6 +5,7 @@
 ## İşletim Sistemleri
 
 </br>Drive Linki: https://drive.google.com/drive/folders/1qUxOXdR2NTrXKqJxKoI6yPn0C5QN1BDl?usp=sharing
+</br>
 </br>Ders Sunumlar (Operating System Concepts): https://os-book.com/OS10/slide-dir/index.html
 </br>CS-342 Operating Systems Playlist: https://youtube.com/playlist?list=PLhwVAYxlh5dsX6aOfVMZXS8MwKwBmwVM6&si=xBTsAw2ulkC2LxF_
 </br>Operating Systems: Three Easy Pieces (Ek Kaynak): https://pages.cs.wisc.edu/~remzi/OSTEP/
@@ -17,7 +18,9 @@
 ## Mikroişlemci ve Assembly Dili
 
 </br>Teams: 2526G_BLM3061_MSAD
-</br>Teams bozulmuş, düzelince ekleyeceğim
+</br>FÇ Ders Anlatım Playlisti: https://www.youtube.com/playlist?list=PLMImWnDxVSNkxEkm2uPUpgaLUBhwACLyo
+</br>Ders Sunumları: https://github.com/batoddy/YTU-CE/blob/main/3_1/Mikroislemci/Ders%20Notlar%C4%B1
+</br>
 </br>Dosbox terminal komutları: https://github.com/batoddy/YTU-CE/blob/main/3_1/Mikroislemci/README.md
 
 ## Veritabanı Yönetimi
