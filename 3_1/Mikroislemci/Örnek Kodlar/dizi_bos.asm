@@ -1,32 +1,32 @@
 STEK SEGMENT PARA STACK 'STK'
-DW 30 DUP(?)
+         DW 30 DUP(?)
 STEK ENDS
 
-DSG  SEGMENT PARA 'DTS'        
-N DW 500
-ARRAY DB 1,2,8,20,25,495 DUP(81)
-ODD DW 0
+DSG SEGMENT PARA 'DTS'
+    N     DW 500
+    ARRAY DB 1,2,8,20,25,495 DUP(81)
+    ODD   DW 0
 DSG ENDS
 
-CSG  SEGMENT PARA 'CODE'
-ASSUME CS:CSG, DS:DSG, SS:STEK
+CSG SEGMENT PARA 'CODE'
+          ASSUME CS:CSG, DS:DSG, SS:STEK
 
-BASLA   PROC FAR
+BASLA PROC FAR
 
-PUSH DS
-XOR AX,AX
-PUSH AX
+          PUSH   DS
+          XOR    AX,AX
+          PUSH   AX
 
-MOV AX, DSG
-MOV DS, AX
+          MOV    AX, DSG
+          MOV    DS, AX
 
-;kod buradan sonra
+    ;kod buradan sonra
 
 
 
-;kod buraya kadar
+    ;kod buraya kadar
 
-RETF
-BASLA   ENDP
-CSG  ENDS
+          RETF
+BASLA ENDP
+CSG ENDS
 END BASLA
