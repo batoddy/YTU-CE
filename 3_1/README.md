@@ -26,5 +26,5 @@
 ## Veritabanı Yönetimi
 
 </br>OneDrive Linki: https://stdyildizedu-my.sharepoint.com/:f:/g/personal/ukalay_yildiz_edu_tr/EtOw238Gb-xGkDlWivXeU4cBv2lYCkrn4OAqgvEmVwE5JQ?e=wGa4cC
-
+</br>Lab Çalışmaları Drive Linki: https://drive.google.com/drive/folders/1hcr-ltUFNAp12gTQX6x2Y_ms6rPHV_5-
 ## Seminer ve Mühendislik Etiği
