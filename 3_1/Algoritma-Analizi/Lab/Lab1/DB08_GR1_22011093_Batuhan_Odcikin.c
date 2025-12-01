@@ -1,4 +1,4 @@
-#include<stdio.h>
+	#include<stdio.h>
 /*
 Bir restorantta ki müsteri sayilari ve müsterilerin mekana giris ve cikis vakitleri verilmistir. Sizden restoranta ayni anda bulunan maksimum müsteri sayisini bulmaniz istenmektedir. 
 

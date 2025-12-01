@@ -19,7 +19,7 @@
 
 </br>Teams: 2526G_BLM3061_MSAD
 </br>FÇ Ders Anlatım Playlisti: https://www.youtube.com/playlist?list=PLMImWnDxVSNkxEkm2uPUpgaLUBhwACLyo
-</br>Ders Sunumları: https://github.com/batoddy/YTU-CE/blob/main/3_1/Mikroislemci/Ders%20Notlar%C4%B1
+</br>Ders Sunumları: https://github.com/batoddy/YTU-CE/blob/main/3_1/Mikroislemci%20ve%20Assembly%20Dili/Ders%20Notlar%C4%B1
 </br>
 </br>Dosbox terminal komutları: https://github.com/batoddy/YTU-CE/blob/main/3_1/Mikroislemci/README.md
 
