@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+{% block title %}Rezervasyon Oluştur - ToolShare{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header">
+                <i class="bi bi-calendar-plus"></i> Rezervasyon Oluştur
+            </div>
+            <div class="card-body">
+                <div class="alert alert-info">
+                    <strong>{{ tool.name }}</strong> için rezervasyon oluşturuluyor<br>
+                    <small>Günlük Ücret: {{ tool.daily_price }} TL | Sahip: {{ tool.owner.username }}</small>
+                </div>
+
+                <form method="post">
+                    {% csrf_token %}
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Başlangıç Tarihi *</label>
+                            <input type="date" name="start_date" class="form-control" min="{{ today|date:'Y-m-d' }}" required>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Bitiş Tarihi *</label>
+                            <input type="date" name="end_date" class="form-control" min="{{ today|date:'Y-m-d' }}" required>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Notlar</label>
+                        <textarea name="notes" class="form-control" rows="2" placeholder="İsteğe bağlı"></textarea>
+                    </div>
+                    <div class="d-flex gap-2">
+                        <button type="submit" class="btn btn-primary">
+                            <i class="bi bi-check-lg"></i> Rezervasyon Yap
+                        </button>
+                        <a href="{% url 'tool_list' %}" class="btn btn-secondary">İptal</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

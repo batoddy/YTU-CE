@@ -1,0 +1,157 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}ToolShare{% endblock %}</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #2563eb;
+            --secondary-color: #1e40af;
+        }
+        body {
+            background-color: #f8fafc;
+            min-height: 100vh;
+        }
+        .navbar {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .sidebar {
+            background: white;
+            min-height: calc(100vh - 56px);
+            box-shadow: 2px 0 10px rgba(0,0,0,0.05);
+        }
+        .sidebar .nav-link {
+            color: #64748b;
+            padding: 12px 20px;
+            border-radius: 8px;
+            margin: 4px 8px;
+            transition: all 0.2s;
+        }
+        .sidebar .nav-link:hover, .sidebar .nav-link.active {
+            background: #eff6ff;
+            color: var(--primary-color);
+        }
+        .sidebar .nav-link i {
+            margin-right: 10px;
+            width: 20px;
+        }
+        .card {
+            border: none;
+            border-radius: 12px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+        .card-header {
+            background: white;
+            border-bottom: 1px solid #e2e8f0;
+            font-weight: 600;
+        }
+        .btn-primary {
+            background: var(--primary-color);
+            border: none;
+        }
+        .btn-primary:hover {
+            background: var(--secondary-color);
+        }
+        .table th {
+            background: #f8fafc;
+            font-weight: 600;
+            color: #475569;
+        }
+        .badge-available { background: #22c55e; }
+        .badge-reserved { background: #f59e0b; }
+        .badge-maintenance { background: #ef4444; }
+        .badge-pending { background: #6366f1; }
+        .badge-approved { background: #22c55e; }
+        .badge-completed { background: #06b6d4; }
+        .badge-cancelled { background: #ef4444; }
+        .badge-rejected { background: #dc2626; }
+        .stat-card {
+            padding: 20px;
+            border-radius: 12px;
+            color: white;
+        }
+        .stat-card.blue { background: linear-gradient(135deg, #3b82f6, #1d4ed8); }
+        .stat-card.green { background: linear-gradient(135deg, #22c55e, #16a34a); }
+        .stat-card.orange { background: linear-gradient(135deg, #f59e0b, #d97706); }
+        .stat-card.purple { background: linear-gradient(135deg, #8b5cf6, #7c3aed); }
+        .stat-card h3 { font-size: 2rem; margin: 0; }
+        .stat-card p { margin: 0; opacity: 0.9; }
+    </style>
+</head>
+<body>
+    {% if user.is_authenticated %}
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand fw-bold" href="{% url 'dashboard' %}">
+                <i class="bi bi-tools"></i> ToolShare
+            </a>
+            <div class="d-flex align-items-center">
+                <span class="text-white me-3">
+                    <i class="bi bi-person-circle"></i> 
+                    {{ user.first_name|default:user.username }}
+                    {% if user.is_staff %}<span class="badge bg-warning text-dark ms-1">Admin</span>{% endif %}
+                </span>
+                <a href="{% url 'logout' %}" class="btn btn-outline-light btn-sm">
+                    <i class="bi bi-box-arrow-right"></i> Çıkış
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-2 sidebar py-3">
+                <nav class="nav flex-column">
+                    <a class="nav-link {% if request.resolver_match.url_name == 'dashboard' %}active{% endif %}" href="{% url 'dashboard' %}">
+                        <i class="bi bi-speedometer2"></i> Dashboard
+                    </a>
+                    <a class="nav-link {% if 'tool' in request.resolver_match.url_name %}active{% endif %}" href="{% url 'tool_list' %}">
+                        <i class="bi bi-tools"></i> Aletler
+                    </a>
+                    <a class="nav-link {% if 'reservation' in request.resolver_match.url_name %}active{% endif %}" href="{% url 'reservation_list' %}">
+                        <i class="bi bi-calendar-check"></i> Rezervasyonlar
+                        {% if notification_unread_count > 0 %}
+                        <span class="badge bg-danger ms-2">{{ notification_unread_count }}</span>
+                        {% endif %}
+                    </a>
+                    {% if user.is_staff %}
+                    <a class="nav-link {% if 'category' in request.resolver_match.url_name %}active{% endif %}" href="{% url 'category_list' %}">
+                        <i class="bi bi-tag"></i> Kategoriler
+                    </a>
+                    <a class="nav-link {% if 'report' in request.resolver_match.url_name %}active{% endif %}" href="{% url 'reports' %}">
+                        <i class="bi bi-bar-chart"></i> Raporlar
+                    </a>
+                    <hr class="mx-3">
+                    <a class="nav-link {% if 'admin' in request.resolver_match.url_name %}active{% endif %}" href="{% url 'admin_panel' %}">
+                        <i class="bi bi-shield-lock"></i> Admin Panel
+                    </a>
+                    {% endif %}
+                </nav>
+            </div>
+
+            <div class="col-md-10 py-4">
+                {% if messages %}
+                    {% for message in messages %}
+                    <div class="alert alert-{{ message.tags|default:'info' }} alert-dismissible fade show" role="alert">
+                        {{ message }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                    </div>
+                    {% endfor %}
+                {% endif %}
+
+                {% block content %}{% endblock %}
+            </div>
+        </div>
+    </div>
+    {% else %}
+        {% block auth_content %}{% endblock %}
+    {% endif %}
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

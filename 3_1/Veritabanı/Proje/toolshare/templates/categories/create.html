@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% block title %}Kategori Ekle{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header"><i class="bi bi-plus-lg"></i> Yeni Kategori</div>
+            <div class="card-body">
+                <form method="post">
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        <label class="form-label">Kategori Adı *</label>
+                        <input type="text" name="name" class="form-control" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Açıklama</label>
+                        <textarea name="description" class="form-control" rows="2"></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Kaydet</button>
+                    <a href="{% url 'category_list' %}" class="btn btn-secondary">İptal</a>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,99 @@
+{% extends 'base.html' %}
+{% block title %}Dashboard - ToolShare{% endblock %}
+
+{% block content %}
+<h4 class="mb-4">
+    <i class="bi bi-speedometer2"></i> Dashboard
+</h4>
+
+<div class="row mb-4">
+    <div class="col-md-3">
+        <div class="stat-card blue">
+            <h3>{{ total_tools }}</h3>
+            <p><i class="bi bi-tools"></i> Toplam Alet</p>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="stat-card green">
+            <h3>{{ available_tools }}</h3>
+            <p><i class="bi bi-check-circle"></i> Müsait Alet</p>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="stat-card orange">
+            <h3>{{ total_reservations }}</h3>
+            <p><i class="bi bi-calendar-check"></i> Toplam Rezervasyon</p>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="stat-card purple">
+            <h3>{{ pending_reservations }}</h3>
+            <p><i class="bi bi-hourglass-split"></i> Bekleyen</p>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header">
+                <i class="bi bi-tools"></i> Son Eklenen Aletler
+            </div>
+            <div class="card-body">
+                <table class="table table-hover mb-0">
+                    <thead>
+                        <tr>
+                            <th>Alet</th>
+                            <th>Kategori</th>
+                            <th>Durum</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for tool in recent_tools %}
+                        <tr>
+                            <td>{{ tool.name }}</td>
+                            <td>{{ tool.category.name }}</td>
+                            <td>
+                                <span class="badge badge-{{ tool.status }}">
+                                    {{ tool.get_status_display }}
+                                </span>
+                            </td>
+                        </tr>
+                        {% empty %}
+                        <tr><td colspan="3" class="text-center text-muted">Henüz alet yok</td></tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header">
+                <i class="bi bi-tag"></i> Kategoriler
+            </div>
+            <div class="card-body">
+                <table class="table table-hover mb-0">
+                    <thead>
+                        <tr>
+                            <th>Kategori</th>
+                            <th>Alet Sayısı</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for category in categories %}
+                        <tr>
+                            <td>{{ category.name }}</td>
+                            <td>{{ category.tool_count }}</td>
+                        </tr>
+                        {% empty %}
+                        <tr><td colspan="2" class="text-center text-muted">Henüz kategori yok</td></tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

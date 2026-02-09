@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+{% block title %}Tool Details VIEW{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between mb-4">
+    <h4><i class="bi bi-eye"></i> VIEW: v_tool_details</h4>
+    <a href="{% url 'reports' %}" class="btn btn-secondary">← Geri</a>
+</div>
+
+<div class="card mb-4">
+    <div class="card-header">VIEW Tanımı</div>
+    <div class="card-body"><pre class="mb-0">CREATE VIEW v_tool_details AS
+SELECT t.id, t.name, t.status, c.name as category, u.username as owner, ...
+FROM tools t JOIN categories c ON ... JOIN auth_user u ON ...</pre></div>
+</div>
+
+<div class="card">
+    <div class="card-header">Sonuçlar</div>
+    <div class="card-body table-responsive">
+        <table class="table table-hover table-sm">
+            <thead><tr><th>ID</th><th>Alet</th><th>Durum</th><th>Kategori</th><th>Sahip</th><th>Fiyat</th><th>Ort. Puan</th><th>Kiralama</th></tr></thead>
+            <tbody>
+                {% for row in results %}
+                <tr>
+                    <td>{{ row.tool_id }}</td>
+                    <td>{{ row.tool_name }}</td>
+                    <td>{{ row.status }}</td>
+                    <td>{{ row.category_name }}</td>
+                    <td>{{ row.owner_username }}</td>
+                    <td>{{ row.daily_price }} TL</td>
+                    <td>{{ row.average_rating }}</td>
+                    <td>{{ row.total_rentals }}</td>
+                </tr>
+                {% empty %}
+                <tr><td colspan="8" class="text-center">Veri yok</td></tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,4 @@
+﻿  Performing Custom Build Tools
+  'ml' is not recognized as an internal or external command,
+  operable program or batch file.
+C:\Program Files\Microsoft Visual Studio\2022\Community\MSBuild\Microsoft\VC\v170\Microsoft.CppCommon.targets(254,5): error MSB8066: Custom build for 'matmul.asm' exited with code 9009.

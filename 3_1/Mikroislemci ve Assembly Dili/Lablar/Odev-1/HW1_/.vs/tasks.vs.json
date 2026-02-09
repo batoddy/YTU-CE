@@ -1,0 +1,10 @@
+{
+  "version": "0.2.1",
+  "tasks": [
+    {
+      "taskLabel": "task-HW1",
+      "appliesTo": "HW1/HW1.cpp",
+      "type": "launch"
+    }
+  ]
+}

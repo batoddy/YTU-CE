@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+{% block title %}{{ borrower.username }} - Gecmis{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h4 class="mb-0"><i class="bi bi-person-lines-fill"></i> {{ borrower.username }} - Gecmis</h4>
+    <a href="{% url 'reservation_list' %}" class="btn btn-outline-secondary">
+        <i class="bi bi-arrow-left"></i> Rezervasyonlara Don
+    </a>
+</div>
+
+<div class="row g-4">
+    <div class="col-12 col-lg-6">
+        <div class="card border-0 shadow-sm">
+            <div class="card-header bg-white">
+                <i class="bi bi-star"></i> Verdigi Alet Puanlari
+            </div>
+            <div class="card-body">
+                {% if ratings_given %}
+                    {% for item in ratings_given %}
+                    <div class="border-bottom py-2">
+                        <div class="d-flex justify-content-between">
+                            <strong>{{ item.tool.name }}</strong>
+                            <span class="text-muted small">{{ item.created_at|date:"d M Y" }}</span>
+                        </div>
+                        <div class="text-muted small">Puan: {{ item.score }}/5</div>
+                        <div>{{ item.comment|default:"-" }}</div>
+                    </div>
+                    {% endfor %}
+                {% else %}
+                    <div class="text-muted">Henuz alet puani yok.</div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    <div class="col-12 col-lg-6">
+        <div class="card border-0 shadow-sm">
+            <div class="card-header bg-white">
+                <i class="bi bi-chat-right-text"></i> Owner Yorumlari
+            </div>
+            <div class="card-body">
+                {% if owner_comments %}
+                    {% for item in owner_comments %}
+                    <div class="border-bottom py-2">
+                        <div class="d-flex justify-content-between">
+                            <strong>{{ item.reservation.tool.name }}</strong>
+                            <span class="text-muted small">{{ item.created_at|date:"d M Y" }}</span>
+                        </div>
+                        <div class="text-muted small">Puan: {{ item.score }}/5</div>
+                        <div>{{ item.comment|default:"-" }}</div>
+                    </div>
+                    {% endfor %}
+                {% else %}
+                    <div class="text-muted">Henuz owner yorumu yok.</div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

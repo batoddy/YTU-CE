@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+{% block title %}Güven Skoru{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between mb-4">
+    <h4><i class="bi bi-person-check"></i> Fonksiyon: calculate_user_trust_score (RECORD)</h4>
+    <a href="{% url 'reports' %}" class="btn btn-secondary">← Geri</a>
+</div>
+
+<div class="row">
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-header">Kullanıcı Seç</div>
+            <div class="card-body">
+                <form method="post">
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        <select name="user_id" class="form-select" required>
+                            {% for u in users %}
+                            <option value="{{ u.id }}">{{ u.username }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-primary w-100">Hesapla</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-8">
+        {% if result %}
+        <div class="card">
+            <div class="card-header">Sonuç (RECORD kullanılarak)</div>
+            <div class="card-body">
+                <table class="table">
+                    <tr><th>Kullanıcı ID</th><td>{{ result.user_id }}</td></tr>
+                    <tr><th>Kullanıcı Adı</th><td>{{ result.username }}</td></tr>
+                    <tr><th>Tamamlanan Kiralama</th><td>{{ result.completed_rentals }}</td></tr>
+                    <tr><th>Ortalama Puan</th><td>{{ result.average_rating }}</td></tr>
+                    <tr><th>Hesaplanan Güven Skoru</th><td><strong>{{ result.calculated_trust_score }}</strong></td></tr>
+                    <tr><th>Güven Seviyesi</th><td><span class="badge bg-info">{{ result.trust_level }}</span></td></tr>
+                </table>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

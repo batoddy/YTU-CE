@@ -1,0 +1,54 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Users\\batuh\\OneDrive\\Masa\u00FCst\u00FC\\YTU-CE\\3_1\\Mikroislemci ve Assembly Dili\\Lablar\\Odev-1\\HW1\\HW1\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{C6EC5039-D0C3-483F-A7BD-CF48F99E12E7}|HW1.vcxproj|C:\\Users\\batuh\\OneDrive\\Masa\u00FCst\u00FC\\YTU-CE\\3_1\\Mikroislemci ve Assembly Dili\\Lablar\\Odev-1\\HW1\\HW1\\HW1.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{C6EC5039-D0C3-483F-A7BD-CF48F99E12E7}|HW1.vcxproj|solutionrelative:HW1.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{C6EC5039-D0C3-483F-A7BD-CF48F99E12E7}|HW1.vcxproj|C:\\Users\\batuh\\OneDrive\\Masa\u00FCst\u00FC\\YTU-CE\\3_1\\Mikroislemci ve Assembly Dili\\Lablar\\Odev-1\\HW1\\HW1\\matmul.asm||{8B382828-6202-11D1-8870-0000F87579D2}",
+      "RelativeMoniker": "D:0:0:{C6EC5039-D0C3-483F-A7BD-CF48F99E12E7}|HW1.vcxproj|solutionrelative:matmul.asm||{8B382828-6202-11D1-8870-0000F87579D2}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 0,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "HW1.cpp",
+              "DocumentMoniker": "C:\\Users\\batuh\\OneDrive\\Masa\u00FCst\u00FC\\YTU-CE\\3_1\\Mikroislemci ve Assembly Dili\\Lablar\\Odev-1\\HW1\\HW1\\HW1.cpp",
+              "RelativeDocumentMoniker": "HW1.cpp",
+              "ToolTip": "C:\\Users\\batuh\\OneDrive\\Masa\u00FCst\u00FC\\YTU-CE\\3_1\\Mikroislemci ve Assembly Dili\\Lablar\\Odev-1\\HW1\\HW1\\HW1.cpp",
+              "RelativeToolTip": "HW1.cpp",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABoAAAAyAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
+              "WhenOpened": "2025-12-05T19:00:18.622Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "matmul.asm",
+              "DocumentMoniker": "C:\\Users\\batuh\\OneDrive\\Masa\u00FCst\u00FC\\YTU-CE\\3_1\\Mikroislemci ve Assembly Dili\\Lablar\\Odev-1\\HW1\\HW1\\matmul.asm",
+              "RelativeDocumentMoniker": "matmul.asm",
+              "ToolTip": "C:\\Users\\batuh\\OneDrive\\Masa\u00FCst\u00FC\\YTU-CE\\3_1\\Mikroislemci ve Assembly Dili\\Lablar\\Odev-1\\HW1\\HW1\\matmul.asm",
+              "RelativeToolTip": "matmul.asm",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAGUAAAAZAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001001|",
+              "WhenOpened": "2025-12-05T19:00:04.918Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

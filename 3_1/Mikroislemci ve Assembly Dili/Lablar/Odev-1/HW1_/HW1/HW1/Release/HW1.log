@@ -1,0 +1,2 @@
+﻿HW1.obj : error LNK2001: unresolved external symbol _matmul_asm
+C:\Users\batuh\OneDrive\Masaüstü\YTU-CE\3_1\Mikroislemci ve Assembly Dili\Lablar\Odev-1\HW1\HW1\Release\HW1.exe : fatal error LNK1120: 1 unresolved externals

@@ -1,0 +1,705 @@
+{% extends 'base.html' %}
+{% block title %}Rezervasyonlar - ToolShare{% endblock %}
+
+{% block content %}
+<h4 class="mb-2"><i class="bi bi-calendar-check"></i> Rezervasyonlar</h4>
+<p class="text-muted">Devam eden ve gecmis rezervasyonlari ayri goruntuleyin.</p>
+
+{% if show_tool_rating %}
+<div class="modal fade" id="toolRatingModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Aleti Puanla</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <p class="mb-2"><strong>{{ show_tool_rating.tool.name }}</strong> icin puan verin.</p>
+                <form method="post" action="{% url 'tool_rating_create' show_tool_rating.id %}">
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        <label class="form-label">Puan (1-5)</label>
+                        <select name="score" class="form-select" required>
+                            <option value="5">5/5</option>
+                            <option value="4">4/5</option>
+                            <option value="3">3/5</option>
+                            <option value="2">2/5</option>
+                            <option value="1">1/5</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Not</label>
+                        <textarea name="comment" class="form-control" rows="2" placeholder="Istege bagli"></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Puanla</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    (function() {
+        document.addEventListener('DOMContentLoaded', function() {
+            var modalEl = document.getElementById('toolRatingModal');
+            if (modalEl && window.bootstrap) {
+                var modal = new bootstrap.Modal(modalEl);
+                modal.show();
+            }
+        });
+    })();
+</script>
+{% endif %}
+
+{% if show_owner_rating %}
+<div class="modal fade" id="ownerRatingModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Borrower Puanla</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <p class="mb-2"><strong>{{ show_owner_rating.borrower.username }}</strong> icin puan verin.</p>
+                <form method="post" action="{% url 'rating_create' show_owner_rating.id %}">
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        <label class="form-label">Puan</label>
+                        <select name="score" class="form-select" required>
+                            <option value="5">Saglam teslim aldim (5)</option>
+                            <option value="1">Kirildi/bozuk teslim edildi (1)</option>
+                        </select>
+                        <div class="form-text">Gec teslimlerde 5 puan secenegi otomatik 3 olur.</div>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Not</label>
+                        <textarea name="comment" class="form-control" rows="2" placeholder="Istege bagli"></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Puanla</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    (function() {
+        document.addEventListener('DOMContentLoaded', function() {
+            var modalEl = document.getElementById('ownerRatingModal');
+            if (modalEl && window.bootstrap) {
+                var modal = new bootstrap.Modal(modalEl);
+                modal.show();
+            }
+        });
+    })();
+</script>
+{% endif %}
+
+{% if user.is_staff %}
+{% with panel=panel %}
+<div class="row g-3 mb-4">
+    <div class="col-12 col-md-6">
+        <a class="btn {% if panel == 'active' %}btn-primary{% else %}btn-outline-primary{% endif %} btn-lg w-100 py-4 text-start position-relative" href="?panel=active">
+            <div class="fw-semibold">Devam Eden</div>
+            {% if panel_counts.active %}
+            <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                {{ panel_counts.active }}
+            </span>
+            {% endif %}
+        </a>
+    </div>
+    <div class="col-12 col-md-6">
+        <a class="btn {% if panel == 'past' %}btn-primary{% else %}btn-outline-primary{% endif %} btn-lg w-100 py-4 text-start position-relative" href="?panel=past">
+            <div class="fw-semibold">Gecmis</div>
+            {% if panel_counts.past %}
+            <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                {{ panel_counts.past }}
+            </span>
+            {% endif %}
+        </a>
+    </div>
+</div>
+{% if panel == 'active' %}
+<div class="card mb-4 border-0 shadow-sm">
+    <div class="card-header bg-white d-flex align-items-center justify-content-between">
+        <div><i class="bi bi-play-circle"></i> Devam Eden Rezervasyonlar</div>
+        <span class="badge bg-success">{{ active_reservations|length }}</span>
+    </div>
+    <div class="card-body">
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Alet</th>
+                    <th>Kiralayan</th>
+                    <th>Tarih</th>
+                    <th>Toplam</th>
+                    <th>Durum</th>
+                    <th>Alet Puani</th>
+                    <th>Borrower Puani</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for res in active_reservations %}
+                <tr{% if res.id in unread_reservation_ids %} class="table-warning"{% endif %}>
+                    <td>{{ res.id }}</td>
+                    <td><strong>{{ res.tool.name }}</strong></td>
+                    <td>
+                        <div>{{ res.borrower.username }}</div>
+                        <div class="text-muted small">Guven: {{ res.borrower_trust_score|floatformat:1 }}/5</div>
+                        {% if res.tool.owner == user or user.is_staff %}
+                        <a class="small" href="{% url 'borrower_history' res.borrower.id %}">Gecmis yorumlar</a>
+                        {% endif %}
+                    </td>
+                    <td>{{ res.start_date }} - {{ res.end_date }}</td>
+                    <td>{{ res.total_price }} TL</td>
+                    <td>
+                        <span class="badge badge-{{ res.status }}">{{ res.get_status_display }}</span>
+                        {% if res.tool.owner == user or user.is_staff %}
+                            {% if res.status == 'pending' %}
+                            <div class="mt-1">
+                                <a href="{% url 'reservation_update_status' res.id %}" class="btn btn-sm btn-primary">
+                                    <i class="bi bi-check-lg"></i> Onayla/Reddet
+                                </a>
+                            </div>
+                            {% elif res.status == 'approved' %}
+                            <div class="mt-1">
+                                <a href="{% url 'reservation_update_status' res.id %}" class="btn btn-sm btn-success">
+                                    <i class="bi bi-check-circle"></i> Tamamla
+                                </a>
+                            </div>
+                            {% endif %}
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if res.borrower == user and res.delivered_at and not res.tool_rating %}
+                        <a href="{% url 'tool_rating_create' res.id %}" class="btn btn-sm btn-warning">
+                            <i class="bi bi-star"></i> Aleti puanla
+                        </a>
+                        {% else %}
+                            {% if res.tool_rating %}
+                                {% if res.tool.owner == user and not res.rating %}
+                                <span class="text-muted">Puan gizli</span>
+                                {% else %}
+                                <span class="badge bg-info">
+                                    <i class="bi bi-star-fill"></i> {{ res.tool_rating.score }}/5
+                                </span>
+                                {% endif %}
+                            {% else %}
+                            <span class="text-muted">Puan yok</span>
+                            {% endif %}
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if res.rating %}
+                        <span class="badge bg-info">
+                            <i class="bi bi-star-fill"></i> {{ res.rating.score }}/5
+                        </span>
+                        {% else %}
+                        <span class="text-muted">Puan yok</span>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="8" class="text-center text-muted py-4">
+                        Henuz rezervasyon yok
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+{% elif panel == 'past' %}
+<div class="card border-0 shadow-sm">
+    <div class="card-header bg-white d-flex align-items-center justify-content-between">
+        <div><i class="bi bi-clock-history"></i> Gecmis Rezervasyonlar</div>
+        <span class="badge bg-secondary">{{ past_reservations|length }}</span>
+    </div>
+    <div class="card-body">
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Alet</th>
+                    <th>Kiralayan</th>
+                    <th>Tarih</th>
+                    <th>Toplam</th>
+                    <th>Durum</th>
+                    <th>Alet Puani</th>
+                    <th>Borrower Puani</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for res in past_reservations %}
+                <tr{% if res.id in unread_reservation_ids %} class="table-warning"{% endif %}>
+                    <td>{{ res.id }}</td>
+                    <td><strong>{{ res.tool.name }}</strong></td>
+                    <td>
+                        <div>{{ res.borrower.username }}</div>
+                        <div class="text-muted small">Guven: {{ res.borrower_trust_score|floatformat:1 }}/5</div>
+                        {% if res.tool.owner == user or user.is_staff %}
+                        <a class="small" href="{% url 'borrower_history' res.borrower.id %}">Gecmis yorumlar</a>
+                        {% endif %}
+                    </td>
+                    <td>{{ res.start_date }} - {{ res.end_date }}</td>
+                    <td>{{ res.total_price }} TL</td>
+                    <td>
+                        <span class="badge badge-{{ res.status }}">{{ res.get_status_display }}</span>
+                    </td>
+                    <td>
+                        {% if res.borrower == user and res.delivered_at and not res.tool_rating %}
+                        <a href="{% url 'tool_rating_create' res.id %}" class="btn btn-sm btn-warning">
+                            <i class="bi bi-star"></i> Aleti puanla
+                        </a>
+                        {% else %}
+                            {% if res.tool_rating %}
+                                {% if res.tool.owner == user and not res.rating %}
+                                <span class="text-muted">Puan gizli</span>
+                                {% else %}
+                                <span class="badge bg-info">
+                                    <i class="bi bi-star-fill"></i> {{ res.tool_rating.score }}/5
+                                </span>
+                                {% endif %}
+                            {% else %}
+                            <span class="text-muted">Puan yok</span>
+                            {% endif %}
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if res.rating %}
+                        <span class="badge bg-info">
+                            <i class="bi bi-star-fill"></i> {{ res.rating.score }}/5
+                        </span>
+                        {% else %}
+                        <span class="text-muted">Puan yok</span>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="8" class="text-center text-muted py-4">
+                        Henuz rezervasyon yok
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endif %}
+{% if panel_notifications %}
+<div class="card border-0 shadow-sm mt-4">
+    <div class="card-header bg-white">
+        <i class="bi bi-bell"></i> Yeni Bildirimler
+    </div>
+    <div class="card-body">
+        {% for note in panel_notifications %}
+        <div class="d-flex justify-content-between border-bottom py-2">
+            <div>{{ note.message }}</div>
+            <div class="text-muted small">{{ note.created_at|date:"d M H:i" }}</div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endif %}
+{% endwith %}
+{% else %}
+{% with panel=panel %}
+<div class="row g-3 mb-4">
+    <div class="col-12 col-md-6">
+        <a class="btn {% if panel == 'borrowed_active' %}btn-primary{% else %}btn-outline-primary{% endif %} btn-lg w-100 py-4 text-start position-relative" href="?panel=borrowed_active">
+            <div class="fw-semibold">Kiraladiklarim - Aktif</div>
+            {% if panel_counts.borrowed_active %}
+            <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                {{ panel_counts.borrowed_active }}
+            </span>
+            {% endif %}
+        </a>
+    </div>
+    <div class="col-12 col-md-6">
+        <a class="btn {% if panel == 'borrowed_past' %}btn-primary{% else %}btn-outline-primary{% endif %} btn-lg w-100 py-4 text-start position-relative" href="?panel=borrowed_past">
+            <div class="fw-semibold">Kiraladiklarim - Gecmis</div>
+            {% if panel_counts.borrowed_past %}
+            <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                {{ panel_counts.borrowed_past }}
+            </span>
+            {% endif %}
+        </a>
+    </div>
+    <div class="col-12 col-md-6">
+        <a class="btn {% if panel == 'owned_active' %}btn-primary{% else %}btn-outline-primary{% endif %} btn-lg w-100 py-4 text-start position-relative" href="?panel=owned_active">
+            <div class="fw-semibold">Aletlerime Gelen - Aktif</div>
+            {% if panel_counts.owned_active %}
+            <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                {{ panel_counts.owned_active }}
+            </span>
+            {% endif %}
+        </a>
+    </div>
+    <div class="col-12 col-md-6">
+        <a class="btn {% if panel == 'owned_past' %}btn-primary{% else %}btn-outline-primary{% endif %} btn-lg w-100 py-4 text-start position-relative" href="?panel=owned_past">
+            <div class="fw-semibold">Aletlerime Gelen - Gecmis</div>
+            {% if panel_counts.owned_past %}
+            <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                {{ panel_counts.owned_past }}
+            </span>
+            {% endif %}
+        </a>
+    </div>
+</div>
+{% if panel == 'borrowed_active' %}
+<div class="card mb-4 border-0 shadow-sm">
+    <div class="card-header bg-white d-flex align-items-center justify-content-between">
+        <div><i class="bi bi-box-arrow-in-right"></i> Kiraladiklarim - Devam Eden</div>
+        <span class="badge bg-success">{{ active_borrowed_reservations|length }}</span>
+    </div>
+    <div class="card-body">
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Alet</th>
+                    <th>Sahip</th>
+                    <th>Tarih</th>
+                    <th>Toplam</th>
+                    <th>Durum</th>
+                    <th>Alet Puani</th>
+                    <th>Borrower Puani</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for res in active_borrowed_reservations %}
+                <tr{% if res.id in unread_reservation_ids %} class="table-warning"{% endif %}>
+                    <td>{{ res.id }}</td>
+                    <td><strong>{{ res.tool.name }}</strong></td>
+                    <td>{{ res.tool.owner.username }}</td>
+                    <td>{{ res.start_date }} - {{ res.end_date }}</td>
+                    <td>{{ res.total_price }} TL</td>
+                    <td>
+                        <span class="badge badge-{{ res.status }}">{{ res.get_status_display }}</span>
+                        {% if res.borrower == user and res.status == 'approved' %}
+                            {% if not res.delivered_at %}
+                            <div class="mt-1">
+                                <form method="post" action="{% url 'reservation_mark_delivered' res.id %}" class="d-inline">
+                                    {% csrf_token %}
+                                    <button type="submit" class="btn btn-sm btn-outline-success">
+                                        <i class="bi bi-box-arrow-in-right"></i> Teslim ettim
+                                    </button>
+                                </form>
+                            </div>
+                            {% else %}
+                            <div class="mt-1">
+                                <span class="badge bg-success">
+                                    <i class="bi bi-check-lg"></i> Teslim edildi
+                                </span>
+                            </div>
+                            {% endif %}
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if res.borrower == user and res.delivered_at %}
+                            {% if not res.tool_rating %}
+                            <a href="{% url 'tool_rating_create' res.id %}" class="btn btn-sm btn-warning">
+                                <i class="bi bi-star"></i> Aleti puanla
+                            </a>
+                            {% else %}
+                            <span class="badge bg-info">
+                                <i class="bi bi-star-fill"></i> {{ res.tool_rating.score }}/5
+                            </span>
+                            {% endif %}
+                        {% else %}
+                            {% if res.tool_rating %}
+                            <span class="badge bg-info">
+                                <i class="bi bi-star-fill"></i> {{ res.tool_rating.score }}/5
+                            </span>
+                            {% else %}
+                            <span class="text-muted">Puan yok</span>
+                            {% endif %}
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if res.rating %}
+                        <span class="badge bg-info">
+                            <i class="bi bi-star-fill"></i> {{ res.rating.score }}/5
+                        </span>
+                        {% else %}
+                        <span class="text-muted">Puan yok</span>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="8" class="text-center text-muted py-4">
+                        Henuz rezervasyon yok
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+{% elif panel == 'borrowed_past' %}
+<div class="card mb-4 border-0 shadow-sm">
+    <div class="card-header bg-white d-flex align-items-center justify-content-between">
+        <div><i class="bi bi-clock-history"></i> Kiraladiklarim - Gecmis</div>
+        <span class="badge bg-secondary">{{ past_borrowed_reservations|length }}</span>
+    </div>
+    <div class="card-body">
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Alet</th>
+                    <th>Sahip</th>
+                    <th>Tarih</th>
+                    <th>Toplam</th>
+                    <th>Durum</th>
+                    <th>Alet Puani</th>
+                    <th>Borrower Puani</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for res in past_borrowed_reservations %}
+                <tr{% if res.id in unread_reservation_ids %} class="table-warning"{% endif %}>
+                    <td>{{ res.id }}</td>
+                    <td><strong>{{ res.tool.name }}</strong></td>
+                    <td>{{ res.tool.owner.username }}</td>
+                    <td>{{ res.start_date }} - {{ res.end_date }}</td>
+                    <td>{{ res.total_price }} TL</td>
+                    <td>
+                        <span class="badge badge-{{ res.status }}">{{ res.get_status_display }}</span>
+                    </td>
+                    <td>
+                        {% if res.borrower == user and res.delivered_at and not res.tool_rating %}
+                        <a href="{% url 'tool_rating_create' res.id %}" class="btn btn-sm btn-warning">
+                            <i class="bi bi-star"></i> Aleti puanla
+                        </a>
+                        {% else %}
+                            {% if res.tool_rating %}
+                                {% if res.tool.owner == user and not res.rating %}
+                                <span class="text-muted">Puan gizli</span>
+                                {% else %}
+                                <span class="badge bg-info">
+                                    <i class="bi bi-star-fill"></i> {{ res.tool_rating.score }}/5
+                                </span>
+                                {% endif %}
+                            {% else %}
+                            <span class="text-muted">Puan yok</span>
+                            {% endif %}
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if res.rating %}
+                        <span class="badge bg-info">
+                            <i class="bi bi-star-fill"></i> {{ res.rating.score }}/5
+                        </span>
+                        {% else %}
+                        <span class="text-muted">Puan yok</span>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="8" class="text-center text-muted py-4">
+                        Henuz rezervasyon yok
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+{% elif panel == 'owned_active' %}
+<div class="card mb-4 border-0 shadow-sm">
+    <div class="card-header bg-white d-flex align-items-center justify-content-between">
+        <div><i class="bi bi-inbox"></i> Aletlerime Gelen Rezervasyonlar - Devam Eden</div>
+        <span class="badge bg-success">{{ active_owned_tool_reservations|length }}</span>
+    </div>
+    <div class="card-body">
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Alet</th>
+                    <th>Kiralayan</th>
+                    <th>Tarih</th>
+                    <th>Toplam</th>
+                    <th>Durum</th>
+                    <th>Alet Puani</th>
+                    <th>Borrower Puani</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for res in active_owned_tool_reservations %}
+                <tr{% if res.id in unread_reservation_ids %} class="table-warning"{% endif %}>
+                    <td>{{ res.id }}</td>
+                    <td><strong>{{ res.tool.name }}</strong></td>
+                    <td>
+                        <div>{{ res.borrower.username }}</div>
+                        <div class="text-muted small">Guven: {{ res.borrower_trust_score|floatformat:1 }}/5</div>
+                        {% if res.tool.owner == user or user.is_staff %}
+                        <a class="small" href="{% url 'borrower_history' res.borrower.id %}">Gecmis yorumlar</a>
+                        {% endif %}
+                    </td>
+                    <td>{{ res.start_date }} - {{ res.end_date }}</td>
+                    <td>{{ res.total_price }} TL</td>
+                    <td>
+                        <span class="badge badge-{{ res.status }}">{{ res.get_status_display }}</span>
+                        {% if res.tool.owner == user %}
+                            {% if res.status == 'pending' %}
+                            <div class="mt-1">
+                                <a href="{% url 'reservation_update_status' res.id %}" class="btn btn-sm btn-primary">
+                                    <i class="bi bi-check-lg"></i> Onayla/Reddet
+                                </a>
+                            </div>
+                            {% elif res.status == 'approved' %}
+                            <div class="mt-1">
+                                <a href="{% url 'reservation_update_status' res.id %}" class="btn btn-sm btn-success">
+                                    <i class="bi bi-check-circle"></i> Tamamla
+                                </a>
+                            </div>
+                            {% endif %}
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if res.borrower == user and res.delivered_at and not res.tool_rating %}
+                        <a href="{% url 'tool_rating_create' res.id %}" class="btn btn-sm btn-warning">
+                            <i class="bi bi-star"></i> Aleti puanla
+                        </a>
+                        {% else %}
+                            {% if res.tool_rating %}
+                                {% if res.tool.owner == user and not res.rating %}
+                                <span class="text-muted">Puan gizli</span>
+                                {% else %}
+                                <span class="badge bg-info">
+                                    <i class="bi bi-star-fill"></i> {{ res.tool_rating.score }}/5
+                                </span>
+                                {% endif %}
+                            {% else %}
+                            <span class="text-muted">Puan yok</span>
+                            {% endif %}
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if res.status == 'completed' %}
+                            {% if not res.rating %}
+                            <a href="{% url 'rating_create' res.id %}" class="btn btn-sm btn-warning">
+                                <i class="bi bi-star"></i> Puanla
+                            </a>
+                            {% else %}
+                            <span class="badge bg-info">
+                                <i class="bi bi-star-fill"></i> {{ res.rating.score }}/5
+                            </span>
+                            {% endif %}
+                        {% else %}
+                            {% if res.rating %}
+                            <span class="badge bg-info">
+                                <i class="bi bi-star-fill"></i> {{ res.rating.score }}/5
+                            </span>
+                            {% else %}
+                            <span class="text-muted">Puan yok</span>
+                            {% endif %}
+                        {% endif %}
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="8" class="text-center text-muted py-4">
+                        Henuz rezervasyon yok
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+{% elif panel == 'owned_past' %}
+<div class="card border-0 shadow-sm">
+    <div class="card-header bg-white d-flex align-items-center justify-content-between">
+        <div><i class="bi bi-clock-history"></i> Aletlerime Gelen Rezervasyonlar - Gecmis</div>
+        <span class="badge bg-secondary">{{ past_owned_tool_reservations|length }}</span>
+    </div>
+    <div class="card-body">
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Alet</th>
+                    <th>Kiralayan</th>
+                    <th>Tarih</th>
+                    <th>Toplam</th>
+                    <th>Durum</th>
+                    <th>Alet Puani</th>
+                    <th>Borrower Puani</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for res in past_owned_tool_reservations %}
+                <tr{% if res.id in unread_reservation_ids %} class="table-warning"{% endif %}>
+                    <td>{{ res.id }}</td>
+                    <td><strong>{{ res.tool.name }}</strong></td>
+                    <td>
+                        <div>{{ res.borrower.username }}</div>
+                        <div class="text-muted small">Guven: {{ res.borrower_trust_score|floatformat:1 }}/5</div>
+                        {% if res.tool.owner == user or user.is_staff %}
+                        <a class="small" href="{% url 'borrower_history' res.borrower.id %}">Gecmis yorumlar</a>
+                        {% endif %}
+                    </td>
+                    <td>{{ res.start_date }} - {{ res.end_date }}</td>
+                    <td>{{ res.total_price }} TL</td>
+                    <td>
+                        <span class="badge badge-{{ res.status }}">{{ res.get_status_display }}</span>
+                    </td>
+                    <td>
+                        {% if res.tool_rating %}
+                        <span class="badge bg-info">
+                            <i class="bi bi-star-fill"></i> {{ res.tool_rating.score }}/5
+                        </span>
+                        {% else %}
+                        <span class="text-muted">Puan yok</span>
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if res.rating %}
+                        <span class="badge bg-info">
+                            <i class="bi bi-star-fill"></i> {{ res.rating.score }}/5
+                        </span>
+                        {% else %}
+                        <span class="text-muted">Puan yok</span>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="8" class="text-center text-muted py-4">
+                        Henuz rezervasyon yok
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endif %}
+{% if panel_notifications %}
+<div class="card border-0 shadow-sm mt-4">
+    <div class="card-header bg-white">
+        <i class="bi bi-bell"></i> Yeni Bildirimler
+    </div>
+    <div class="card-body">
+        {% for note in panel_notifications %}
+        <div class="d-flex justify-content-between border-bottom py-2">
+            <div>{{ note.message }}</div>
+            <div class="text-muted small">{{ note.created_at|date:"d M H:i" }}</div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endif %}
+{% endwith %}
+{% endif %}
+{% endblock %}

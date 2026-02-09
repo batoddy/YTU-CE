@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+{% block title %}Kategori İstatistikleri{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between mb-4">
+    <h4><i class="bi bi-bar-chart"></i> Fonksiyon: get_category_statistics (CURSOR)</h4>
+    <a href="{% url 'reports' %}" class="btn btn-secondary">← Geri</a>
+</div>
+
+<div class="card mb-4">
+    <div class="card-header">Bu fonksiyon CURSOR kullanır</div>
+    <div class="card-body"><pre class="mb-0">DECLARE category_cursor CURSOR FOR SELECT c.id, c.name FROM categories c;
+OPEN category_cursor;
+LOOP FETCH category_cursor INTO v_cat_record; ... END LOOP;
+CLOSE category_cursor;</pre></div>
+</div>
+
+<div class="card">
+    <div class="card-header">Sonuçlar</div>
+    <div class="card-body">
+        <table class="table table-hover">
+            <thead><tr><th>ID</th><th>Kategori</th><th>Alet</th><th>Müsait</th><th>Rezerve</th><th>Toplam Rez.</th><th>Ort. Fiyat</th></tr></thead>
+            <tbody>
+                {% for row in results %}
+                <tr><td>{{ row.0 }}</td><td>{{ row.1 }}</td><td>{{ row.2 }}</td><td>{{ row.3 }}</td><td>{{ row.4 }}</td><td>{{ row.5 }}</td><td>{{ row.6 }} TL</td></tr>
+                {% empty %}
+                <tr><td colspan="7" class="text-center">Veri yok</td></tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+{% block title %}Müsaitlik Kontrolü{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between mb-4">
+    <h4><i class="bi bi-calendar-check"></i> Fonksiyon: get_tool_availability</h4>
+    <a href="{% url 'reports' %}" class="btn btn-secondary">← Geri</a>
+</div>
+
+<div class="row">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header">Parametre Gir</div>
+            <div class="card-body">
+                <form method="post">
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        <label class="form-label">Alet</label>
+                        <select name="tool_id" class="form-select" required>
+                            {% for tool in tools %}
+                            <option value="{{ tool.id }}">{{ tool.name }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Başlangıç</label>
+                        <input type="date" name="start_date" class="form-control" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Bitiş</label>
+                        <input type="date" name="end_date" class="form-control" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Kontrol Et</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        {% if result %}
+        <div class="card">
+            <div class="card-header">Sonuç</div>
+            <div class="card-body">
+                <p><strong>Müsait:</strong> {% if result.is_available %}<span class="text-success">Evet</span>{% else %}<span class="text-danger">Hayır</span>{% endif %}</p>
+                <p><strong>Çakışan:</strong> {{ result.conflicting_reservations }}</p>
+                <p><strong>Mesaj:</strong> {{ result.message }}</p>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

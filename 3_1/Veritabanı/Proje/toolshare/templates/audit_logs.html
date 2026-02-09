@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+{% block title %}Audit Logları{% endblock %}
+
+{% block content %}
+<h4 class="mb-4"><i class="bi bi-journal-text"></i> Audit Logları</h4>
+<div class="card">
+    <div class="card-body">
+        <table class="table">
+            <thead><tr><th>Zaman</th><th>Tablo</th><th>İşlem</th><th>Kayıt ID</th><th>Mesaj</th></tr></thead>
+            <tbody>
+                {% for log in logs %}
+                <tr>
+                    <td>{{ log.performed_at|date:"d.m.Y H:i:s" }}</td>
+                    <td>{{ log.table_name }}</td>
+                    <td>{{ log.action }}</td>
+                    <td>{{ log.record_id }}</td>
+                    <td>{{ log.message }}</td>
+                </tr>
+                {% empty %}
+                <tr><td colspan="5" class="text-center">Log yok</td></tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

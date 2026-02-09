@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+{% block title %}INTERSECT Sorgusu{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between mb-4">
+    <h4><i class="bi bi-intersect"></i> INTERSECT Sorgusu</h4>
+    <a href="{% url 'reports' %}" class="btn btn-secondary">← Geri</a>
+</div>
+
+<div class="card mb-4">
+    <div class="card-header">SQL Sorgusu</div>
+    <div class="card-body"><pre class="mb-0">SELECT DISTINCT u.id, u.username, u.email FROM auth_user u JOIN tools t ON u.id = t.owner_id
+INTERSECT
+SELECT DISTINCT u.id, u.username, u.email FROM auth_user u JOIN reservations r ON u.id = r.borrower_id</pre></div>
+</div>
+
+<div class="card">
+    <div class="card-header">Hem Alet Sahibi Hem Kiralayan Kullanıcılar ({{ results|length }} kayıt)</div>
+    <div class="card-body">
+        <table class="table table-hover">
+            <thead><tr><th>ID</th><th>Kullanıcı</th><th>E-posta</th></tr></thead>
+            <tbody>
+                {% for row in results %}
+                <tr><td>{{ row.0 }}</td><td>{{ row.1 }}</td><td>{{ row.2 }}</td></tr>
+                {% empty %}
+                <tr><td colspan="3" class="text-center">Veri yok</td></tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% block title %}Rezervasyon Durumu{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header"><i class="bi bi-check-circle"></i> Durum Güncelle</div>
+            <div class="card-body">
+                <p><strong>Alet:</strong> {{ reservation.tool.name }}</p>
+                <p><strong>Kiralayan:</strong> {{ reservation.borrower.username }}</p>
+                <p><strong>Tarih:</strong> {{ reservation.start_date }} - {{ reservation.end_date }}</p>
+                <form method="post">
+                    {% csrf_token %}
+                    <select name="status" class="form-select mb-3">
+                        {% if reservation.status == 'pending' %}
+                        <option value="approved">Onayla</option>
+                        <option value="rejected">Reddet</option>
+                        {% elif reservation.status == 'approved' %}
+                        <option value="completed">Tamamlandı</option>
+                        <option value="cancelled">İptal Et</option>
+                        {% endif %}
+                    </select>
+                    <button type="submit" class="btn btn-primary">Güncelle</button>
+                    <a href="{% url 'reservation_list' %}" class="btn btn-secondary">İptal</a>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

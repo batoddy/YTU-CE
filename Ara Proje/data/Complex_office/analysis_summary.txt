@@ -1,0 +1,23 @@
+================ ANALİZ ÖZETİ ================
+
+--- COVERAGE ---
+2D Alan Max              : 871.60 m²
+2D Alan %90 Süre         : 394.59 s
+3D Hacim Max             : 1425.38 m³
+3D Hacim %90 Süre        : 392.62 s
+
+--- HIZ ---
+Anlık Hız Min            : 0.0080 m/s
+Anlık Hız Max            : 1.5390 m/s
+Anlık Hız Ortalama       : 1.0716 m/s
+Anlık Hız Std Sapma      : 0.3857
+
+--- HAREKET KALİTESİ ---
+Ortalama |dv/dt|        : 0.1288 m/s²
+Durma Oranı (v<0.05)    : 0.40 %
+
+--- GLOBAL ---
+Toplam Mesafe           : 203.895 m
+Toplam Süre             : 500.945 s
+Ort. Hız (path/time)    : 0.4070 m/s
+Son Ort. Hız (integral) : 0.4070 m/s

@@ -1,0 +1,41 @@
+w_distance: 2.0               # Distance penalty (düşürüldü: uzak frontier'lar da değerlensin)
+w_size: 0.02                  # Small cluster penalty
+w_angle: 0.4                 # Direction change penalty (artırıldı: zigzag önle)
+w_coverage: 0.4               # Low coverage penalty (artırıldı: coverage önemli)
+
+max_viewpoints_to_evaluate: 5 
+
+# Pure Pursuit Parameters
+lookahead_distance: 1.0       # [m] Base lookahead distance (artırıldı: daha smooth dönüşler)
+min_lookahead_distance: 0.2   # [m] Minimum lookahead (düşük hızda)
+lookahead_gain: 0.4           # Lookahead = base + gain * velocity (hıza göre lookahead artışı)
+
+# PD Gains - Proportional + Derivative for smooth control
+kp_linear: 1.0                # Position proportional gain (azaltıldı: daha yumuşak)
+kd_linear: 0.6                # Position derivative gain (artırıldı: daha fazla damping)
+kp_yaw: 1.0                   # Yaw proportional gain (azaltıldı: daha sakin dönüş)
+kd_yaw: 0.5                   # Yaw derivative gain
+
+# Smoothing parameters
+velocity_smoothing: 0.25      # Exponential smoothing (artırıldı: daha smooth)
+slowdown_distance: 1.0        # [m] Start slowing before goal (daha erken yavaşla)
+min_approach_speed: 0.4       # [m/s] Minimum speed when approaching
+
+    v_max: 2.0               # [m/s] Maximum linear velocity (sakinleştirildi)
+yaw_rate_max: 1.5        # [rad/s] Maximum yaw rate (~86 deg/s, daha sakin)
+
+a_max: 0.5                 # [m/s²] Max linear acceleration (yumuşak ivmelenme)
+yaw_accel_max: 0.8         # [rad/s²] Max yaw acceleration (overshoot önleme)
+
+
+    # Sensor model
+sensor_range: 7.0          # Max sensing range (m)
+sensor_fov_h: 1.57         # Horizontal FOV (~90°)
+
+    min_dist: 1.0              # Min distance from cluster (safety buffer)
+max_dist: 3.0              # Max distance from cluster
+num_dist_samples: 5        # Radial samples
+num_angle_samples: 16      # Angular samples around cluster
+
+# Filtering
+min_coverage: 5            # Min visible cells (absolute minimum)

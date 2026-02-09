@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+{% block title %}Alet Düzenle - ToolShare{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header">
+                <i class="bi bi-pencil"></i> Alet Düzenle: {{ tool.name }}
+            </div>
+            <div class="card-body">
+                <form method="post">
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        <label class="form-label">Alet Adı *</label>
+                        <input type="text" name="name" class="form-control" value="{{ tool.name }}" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Açıklama</label>
+                        <textarea name="description" class="form-control" rows="3">{{ tool.description }}</textarea>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4 mb-3">
+                            <label class="form-label">Kategori *</label>
+                            <select name="category" class="form-select" required>
+                                {% for cat in categories %}
+                                <option value="{{ cat.id }}" {% if cat.id == tool.category_id %}selected{% endif %}>{{ cat.name }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label class="form-label">Günlük Ücret (TL) *</label>
+                            <input type="number" name="daily_price" class="form-control" step="0.01" value="{{ tool.daily_price }}" required>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label class="form-label">Durum *</label>
+                            <select name="status" class="form-select" required>
+                                <option value="available" {% if tool.status == 'available' %}selected{% endif %}>Müsait</option>
+                                <option value="reserved" {% if tool.status == 'reserved' %}selected{% endif %}>Rezerve</option>
+                                <option value="maintenance" {% if tool.status == 'maintenance' %}selected{% endif %}>Bakımda</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="d-flex gap-2">
+                        <button type="submit" class="btn btn-primary">
+                            <i class="bi bi-check-lg"></i> Güncelle
+                        </button>
+                        <a href="{% url 'tool_list' %}" class="btn btn-secondary">İptal</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

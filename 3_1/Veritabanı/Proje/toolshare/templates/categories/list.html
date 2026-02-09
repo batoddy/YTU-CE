@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+{% block title %}Kategoriler{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h4><i class="bi bi-tag"></i> Kategoriler</h4>
+    {% if user.is_staff %}
+    <a href="{% url 'category_create' %}" class="btn btn-primary"><i class="bi bi-plus-lg"></i> Yeni Kategori</a>
+    {% endif %}
+</div>
+
+<div class="card">
+    <div class="card-body">
+        <table class="table table-hover">
+            <thead>
+                <tr><th>ID</th><th>Kategori</th><th>Açıklama</th><th>Alet Sayısı</th><th>İşlemler</th></tr>
+            </thead>
+            <tbody>
+                {% for cat in categories %}
+                <tr>
+                    <td>{{ cat.id }}</td>
+                    <td><strong>{{ cat.name }}</strong></td>
+                    <td>{{ cat.description|default:"-" }}</td>
+                    <td><span class="badge bg-primary">{{ cat.tool_count }}</span></td>
+                    <td>
+                        {% if user.is_staff %}
+                        <a href="{% url 'category_update' cat.id %}" class="btn btn-sm btn-warning"><i class="bi bi-pencil"></i></a>
+                        <a href="{% url 'category_delete' cat.id %}" class="btn btn-sm btn-danger"><i class="bi bi-trash"></i></a>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% empty %}
+                <tr><td colspan="5" class="text-center">Henüz kategori yok</td></tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

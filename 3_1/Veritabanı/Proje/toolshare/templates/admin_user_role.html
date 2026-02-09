@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+{% block title %}Rol Değiştir{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header">Kullanıcı Rolü Değiştir</div>
+            <div class="card-body">
+                <p><strong>Kullanıcı:</strong> {{ target_user.username }}</p>
+                <p><strong>Mevcut Rol:</strong> {{ profile.role }}</p>
+                <form method="post">
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        <label class="form-label">Yeni Rol</label>
+                        <select name="role" class="form-select">
+                            <option value="user" {% if profile.role == 'user' %}selected{% endif %}>User</option>
+                            <option value="admin" {% if profile.role == 'admin' %}selected{% endif %}>Admin</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Güncelle</button>
+                    <a href="{% url 'admin_panel' %}" class="btn btn-secondary">İptal</a>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

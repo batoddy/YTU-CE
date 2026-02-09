@@ -1,0 +1,7 @@
+﻿  Performing Custom Build Tools
+  Microsoft (R) Macro Assembler Version 14.44.35221.0
+  Copyright (C) Microsoft Corporation.  All rights reserved.
+  
+   Assembling: C:\Users\batuh\OneDrive\Masa³st³\YTU-CE\3_1\Mikroislemci ve Assembly Dili\Lablar\Odev-1\HW1_\HW1\matmul.asm
+C:\Users\batuh\OneDrive\Masa³st³\YTU-CE\3_1\Mikroislemci ve Assembly Dili\Lablar\Odev-1\HW1_\HW1\matmul.asm(1): error A2044: invalid character in file
+C:\Program Files\Microsoft Visual Studio\2022\Community\MSBuild\Microsoft\VC\v170\Microsoft.CppCommon.targets(254,5): error MSB8066: Custom build for 'matmul.asm' exited with code 1.

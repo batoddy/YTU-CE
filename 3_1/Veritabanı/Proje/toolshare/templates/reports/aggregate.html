@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+{% block title %}Aggregate + HAVING{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between mb-4">
+    <h4><i class="bi bi-calculator"></i> Aggregate + HAVING</h4>
+    <a href="{% url 'reports' %}" class="btn btn-secondary">← Geri</a>
+</div>
+
+<div class="card mb-4">
+    <div class="card-header">SQL Sorgusu</div>
+    <div class="card-body"><pre class="mb-0">SELECT c.name, COUNT(t.id), AVG(t.daily_price), SUM(t.daily_price), MAX(t.daily_price), MIN(t.daily_price)
+FROM categories c JOIN tools t ON c.id = t.category_id
+GROUP BY c.id, c.name HAVING COUNT(t.id) >= 1
+ORDER BY COUNT(t.id) DESC</pre></div>
+</div>
+
+<div class="card">
+    <div class="card-header">Kategori İstatistikleri</div>
+    <div class="card-body">
+        <table class="table table-hover">
+            <thead><tr><th>Kategori</th><th>Alet Sayısı</th><th>Ort. Fiyat</th><th>Toplam</th><th>Max</th><th>Min</th></tr></thead>
+            <tbody>
+                {% for row in results %}
+                <tr><td>{{ row.0 }}</td><td>{{ row.1 }}</td><td>{{ row.2 }} TL</td><td>{{ row.3 }} TL</td><td>{{ row.4 }} TL</td><td>{{ row.5 }} TL</td></tr>
+                {% empty %}
+                <tr><td colspan="6" class="text-center">Veri yok</td></tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

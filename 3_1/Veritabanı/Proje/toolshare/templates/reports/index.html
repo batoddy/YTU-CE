@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+{% block title %}Raporlar{% endblock %}
+
+{% block content %}
+<h4 class="mb-4"><i class="bi bi-bar-chart"></i> Raporlar ve SQL İşlemleri</h4>
+
+<div class="row">
+    <div class="col-md-6 mb-4">
+        <div class="card h-100">
+            <div class="card-header bg-primary text-white">
+                <i class="bi bi-union"></i> Set İşlemleri (UNION/INTERSECT/EXCEPT)
+            </div>
+            <div class="card-body">
+                <a href="{% url 'report_union' %}" class="btn btn-outline-primary mb-2 w-100">UNION - Müsait ve Rezerve Aletler</a>
+                <a href="{% url 'report_intersect' %}" class="btn btn-outline-primary mb-2 w-100">INTERSECT - Hem Sahip Hem Kiralayan</a>
+                <a href="{% url 'report_except' %}" class="btn btn-outline-primary w-100">EXCEPT - Sadece Sahip Olanlar</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-6 mb-4">
+        <div class="card h-100">
+            <div class="card-header bg-success text-white">
+                <i class="bi bi-calculator"></i> Aggregate + HAVING
+            </div>
+            <div class="card-body">
+                <a href="{% url 'report_aggregate' %}" class="btn btn-outline-success w-100">Kategori İstatistikleri</a>
+                <p class="mt-3 text-muted small">COUNT, AVG, SUM, MAX, MIN + HAVING kullanımı</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-6 mb-4">
+        <div class="card h-100">
+            <div class="card-header bg-warning">
+                <i class="bi bi-code-square"></i> SQL Fonksiyonları
+            </div>
+            <div class="card-body">
+                <a href="{% url 'sql_function_availability' %}" class="btn btn-outline-warning mb-2 w-100">F1: Müsaitlik Kontrolü</a>
+                <a href="{% url 'sql_function_trust_score' %}" class="btn btn-outline-warning mb-2 w-100">F2: Güven Skoru (RECORD)</a>
+                <a href="{% url 'sql_function_category_stats' %}" class="btn btn-outline-warning w-100">F3: Kategori İstatistik (CURSOR)</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-6 mb-4">
+        <div class="card h-100">
+            <div class="card-header bg-info text-white">
+                <i class="bi bi-eye"></i> VIEW Kullanımı
+            </div>
+            <div class="card-body">
+                <a href="{% url 'view_tool_details' %}" class="btn btn-outline-info w-100">v_tool_details VIEW</a>
+                <p class="mt-3 text-muted small">Aletlerin detaylı görünümü (VIEW sorgusu)</p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

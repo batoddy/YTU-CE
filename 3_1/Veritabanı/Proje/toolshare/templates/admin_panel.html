@@ -1,0 +1,69 @@
+{% extends 'base.html' %}
+{% block title %}Admin Panel{% endblock %}
+
+{% block content %}
+<h4 class="mb-4"><i class="bi bi-shield-lock"></i> Admin Panel</h4>
+
+<div class="row">
+    <div class="col-md-6 mb-4">
+        <div class="card">
+            <div class="card-header"><i class="bi bi-people"></i> Kullanıcılar</div>
+            <div class="card-body">
+                <table class="table table-sm">
+                    <thead><tr><th>ID</th><th>Kullanıcı</th><th>Rol</th><th>İşlem</th></tr></thead>
+                    <tbody>
+                        {% for u in users %}
+                        <tr>
+                            <td>{{ u.id }}</td>
+                            <td>{{ u.username }}</td>
+                            <td>
+                                {% if u.is_staff %}<span class="badge bg-warning">Admin</span>
+                                {% else %}<span class="badge bg-secondary">User</span>{% endif %}
+                            </td>
+                            <td><a href="{% url 'admin_user_role' u.id %}" class="btn btn-sm btn-outline-primary">Rol Değiştir</a></td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-6 mb-4">
+        <div class="card">
+            <div class="card-header"><i class="bi bi-tag"></i> Kategoriler</div>
+            <div class="card-body">
+                <table class="table table-sm">
+                    <thead><tr><th>Kategori</th><th>Alet Sayısı</th></tr></thead>
+                    <tbody>
+                        {% for cat in categories %}
+                        <tr><td>{{ cat.name }}</td><td>{{ cat.tool_count }}</td></tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-header"><i class="bi bi-journal-text"></i> Son Audit Logları (Trigger Kayıtları)</div>
+    <div class="card-body">
+        <table class="table table-sm">
+            <thead><tr><th>Zaman</th><th>Tablo</th><th>İşlem</th><th>Mesaj</th></tr></thead>
+            <tbody>
+                {% for log in audit_logs %}
+                <tr>
+                    <td>{{ log.performed_at|date:"d.m.Y H:i" }}</td>
+                    <td>{{ log.table_name }}</td>
+                    <td><span class="badge bg-info">{{ log.action }}</span></td>
+                    <td><small>{{ log.message|truncatechars:80 }}</small></td>
+                </tr>
+                {% empty %}
+                <tr><td colspan="4" class="text-center">Henüz log yok</td></tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+{% block title %}Alet Puanla{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header"><i class="bi bi-star"></i> Alet Puanla</div>
+            <div class="card-body">
+                <p><strong>Alet:</strong> {{ reservation.tool.name }}</p>
+                <form method="post">
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        <label class="form-label">Puan (1-5)</label>
+                        <select name="score" class="form-select" required>
+                            <option value="5">5/5</option>
+                            <option value="4">4/5</option>
+                            <option value="3">3/5</option>
+                            <option value="2">2/5</option>
+                            <option value="1">1/5</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Yorum</label>
+                        <textarea name="comment" class="form-control" rows="3"></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Gonder</button>
+                    <a href="{% url 'reservation_list' %}" class="btn btn-secondary">Iptal</a>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

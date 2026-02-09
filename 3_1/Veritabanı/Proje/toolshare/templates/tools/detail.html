@@ -1,0 +1,279 @@
+{% extends 'base.html' %}
+{% block title %}{{ tool.name }} - ToolShare{% endblock %}
+
+{% block content %}
+<style>
+    .selectable { cursor: pointer; }
+    .selectable.ring { outline: 3px solid #0d6efd; outline-offset: 1px; }
+</style>
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <div>
+        <h4 class="mb-1"><i class="bi bi-tools"></i> {{ tool.name }}</h4>
+        <div class="text-muted small">{{ tool.category.name }} | Sahip: {{ tool.owner.username }}</div>
+    </div>
+    <div class="d-flex gap-2">
+    {% if tool.owner == user %}
+    <button class="btn btn-secondary" disabled>
+        <i class="bi bi-exclamation-circle"></i> Alet zaten sizin
+    </button>
+    {% elif tool.status == 'maintenance' %}
+    <button class="btn btn-secondary" disabled>
+        <i class="bi bi-slash-circle"></i> Bakimda
+    </button>
+    {% else %}
+    <a href="{% url 'reservation_create' tool.id %}" class="btn btn-primary">
+        <i class="bi bi-calendar-plus"></i> Rezervasyon Yap
+    </a>
+    {% endif %}
+    <a href="{% url 'tool_comments' tool.id %}" class="btn btn-outline-primary">
+        <i class="bi bi-chat-left-text"></i> Yorumlar
+    </a>
+    </div>
+</div>
+
+<div class="row g-4">
+    <div class="col-12 col-lg-5">
+        <div class="card border-0 shadow-sm">
+            <div class="card-header bg-white">
+                <i class="bi bi-info-circle"></i> Alet Bilgileri
+            </div>
+            <div class="card-body">
+                <p class="mb-2">
+                    <strong>Durum:</strong>
+                    {% if next_reserved_range %}
+                        Rezerve ({{ next_reserved_range.start }} - {{ next_reserved_range.end }})
+                    {% else %}
+                        {{ tool.get_status_display }}
+                    {% endif %}
+                </p>
+                <p class="mb-2"><strong>Günlük Ücret:</strong> {{ tool.daily_price }} TL</p>
+                <p class="mb-2"><strong>Açıklama:</strong> {{ tool.description|default:"-" }}</p>
+            </div>
+        </div>
+
+        <div class="card border-0 shadow-sm mt-4">
+            <div class="card-header bg-white">
+                <i class="bi bi-calendar-x"></i> Rezerve Tarihler
+            </div>
+            <div class="card-body">
+                {% if reserved_ranges %}
+                    {% for item in reserved_ranges %}
+                    <div class="d-flex justify-content-between align-items-center border-bottom py-2">
+                        <span>{{ item.start }} - {{ item.end }}</span>
+                        <span class="badge bg-danger">Rezerve</span>
+                    </div>
+                    {% endfor %}
+                {% else %}
+                    <div class="text-muted">Gelecek tarihlerde rezervasyon yok.</div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    <div class="col-12 col-lg-7">
+        <div class="card border-0 shadow-sm">
+            <div class="card-header bg-white d-flex align-items-center justify-content-between">
+                <div><i class="bi bi-calendar3"></i> Uygunluk Takvimi</div>
+                <div class="d-flex align-items-center gap-2">
+                    <button id="prevMonth" class="btn btn-outline-primary btn-sm">
+                        <i class="bi bi-chevron-left"></i>
+                    </button>
+                    <button id="nextMonth" class="btn btn-outline-primary btn-sm">
+                        <i class="bi bi-chevron-right"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="d-flex gap-2 mb-3">
+                    <span class="badge bg-success">Müsait</span>
+                    <span class="badge bg-danger">Rezerve</span>
+                    <span class="badge bg-secondary">Kapali</span>
+                </div>
+                {% for month in months %}
+                <div class="month-panel{% if not forloop.first %} d-none{% endif %}" data-index="{{ forloop.counter0 }}">
+                    <div class="fw-semibold mb-2">{{ month.name }} {{ month.year }}</div>
+                    <div class="row row-cols-7 g-1 mb-4">
+                        {% for week in month.weeks %}
+                            {% for day in week %}
+                            <div class="col">
+                                {% if not day.in_month %}
+                                <div class="border rounded p-2 text-center bg-light text-muted small">&nbsp;</div>
+                                {% else %}
+                                    {% if tool.status == 'maintenance' %}
+                                    <div class="border rounded p-2 text-center bg-secondary text-white small">{{ day.date|date:"j" }}</div>
+                                    {% elif day.is_reserved %}
+                                    <div class="border rounded p-2 text-center bg-danger text-white small">{{ day.date|date:"j" }}</div>
+                                    {% elif day.is_past %}
+                                    <div class="border rounded p-2 text-center bg-secondary text-white small">{{ day.date|date:"j" }}</div>
+                                    {% else %}
+                                    <div class="border rounded p-2 text-center bg-success text-white small selectable" data-date="{{ day.date|date:'Y-m-d' }}">{{ day.date|date:"j" }}</div>
+                                    {% endif %}
+                                {% endif %}
+                            </div>
+                            {% endfor %}
+                        {% endfor %}
+                    </div>
+                </div>
+                {% endfor %}
+                <div class="d-flex align-items-center justify-content-between">
+                    <div class="text-muted small">
+                        Secilen aralik: <span id="selectedRange">-</span>
+                        <span id="selectionWarning" class="text-danger ms-2 d-none">Gunler bitisik olmali.</span>
+                    </div>
+                    <button id="openReservation" class="btn btn-primary" disabled>
+                        <i class="bi bi-calendar-plus"></i> Rezerve Et
+                    </button>
+                </div>
+            </div>
+            <div class="card-footer bg-white text-muted small">
+                Rezerve ve gecmis tarihlere rezervasyon yapilamaz.
+            </div>
+        </div>
+        <div id="reservationForm" class="card border-0 shadow-sm mt-4 d-none">
+            <div class="card-header bg-white">
+                <i class="bi bi-pencil-square"></i> Rezervasyon Bilgileri
+            </div>
+            <div class="card-body">
+                <form method="post" action="{% url 'reservation_create' tool.id %}">
+                    {% csrf_token %}
+                    <input id="startDate" type="hidden" name="start_date" required>
+                    <input id="endDate" type="hidden" name="end_date" required>
+                    <div class="mb-2">
+                        <strong>Secilen tarih araligi:</strong>
+                        <span id="selectedRangeForm">-</span>
+                    </div>
+                    <div class="mb-2 text-muted">
+                        Tahmini fiyat: <strong><span id="totalPrice">{{ tool.daily_price }}</span> TL</strong>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Notlar</label>
+                        <textarea name="notes" class="form-control" rows="2" placeholder="Istege bagli"></textarea>
+                    </div>
+                    <div class="form-check mb-3">
+                        <input class="form-check-input" type="checkbox" id="confirmReservation" required>
+                        <label class="form-check-label" for="confirmReservation">
+                            Tarih ve fiyat bilgilerini onayliyorum
+                        </label>
+                    </div>
+                    <button type="submit" class="btn btn-primary">
+                        <i class="bi bi-check-lg"></i> Rezervasyon Yap
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    (function() {
+        var selectable = document.querySelectorAll('.selectable');
+        var selectedRangeEl = document.getElementById('selectedRange');
+        var selectedRangeFormEl = document.getElementById('selectedRangeForm');
+        var selectionWarning = document.getElementById('selectionWarning');
+        var openButton = document.getElementById('openReservation');
+        var formCard = document.getElementById('reservationForm');
+        var startInput = document.getElementById('startDate');
+        var endInput = document.getElementById('endDate');
+        var priceEl = document.getElementById('totalPrice');
+        var dailyPrice = Number('{{ tool.daily_price }}'.replace(',', '.'));
+        var selectedDates = [];
+
+        var monthPanels = document.querySelectorAll('.month-panel');
+        var currentIndex = 0;
+        var prevMonth = document.getElementById('prevMonth');
+        var nextMonth = document.getElementById('nextMonth');
+
+        function showMonth(index) {
+            if (index < 0 || index >= monthPanels.length) {
+                return;
+            }
+            monthPanels[currentIndex].classList.add('d-none');
+            currentIndex = index;
+            monthPanels[currentIndex].classList.remove('d-none');
+        }
+
+        prevMonth.addEventListener('click', function() {
+            showMonth(currentIndex - 1);
+        });
+
+        nextMonth.addEventListener('click', function() {
+            showMonth(currentIndex + 1);
+        });
+
+        function updatePrice() {
+            if (!startInput.value || !endInput.value) {
+                return;
+            }
+            var start = new Date(startInput.value);
+            var end = new Date(endInput.value);
+            var diff = Math.round((end - start) / (1000 * 60 * 60 * 24)) + 1;
+            priceEl.textContent = (diff * dailyPrice).toFixed(2);
+        }
+
+        function parseDate(value) {
+            var parts = value.split('-');
+            return new Date(Number(parts[0]), Number(parts[1]) - 1, Number(parts[2]));
+        }
+
+        function formatRange(start, end) {
+            if (!start || !end) {
+                return '-';
+            }
+            return start + ' - ' + end;
+        }
+
+        function validateSelection() {
+            if (selectedDates.length === 0) {
+                selectionWarning.classList.add('d-none');
+                openButton.disabled = true;
+                selectedRangeEl.textContent = '-';
+                selectedRangeFormEl.textContent = '-';
+                startInput.value = '';
+                endInput.value = '';
+                return;
+            }
+
+            selectedDates.sort();
+            var start = selectedDates[0];
+            var end = selectedDates[selectedDates.length - 1];
+            var startDate = parseDate(start);
+            var endDate = parseDate(end);
+            var days = Math.round((endDate - startDate) / (1000 * 60 * 60 * 24)) + 1;
+            var contiguous = days === selectedDates.length;
+
+            if (!contiguous) {
+                selectionWarning.classList.remove('d-none');
+                openButton.disabled = true;
+            } else {
+                selectionWarning.classList.add('d-none');
+                openButton.disabled = false;
+            }
+
+            selectedRangeEl.textContent = formatRange(start, end);
+            selectedRangeFormEl.textContent = formatRange(start, end);
+            startInput.value = start;
+            endInput.value = end;
+            updatePrice();
+        }
+
+        selectable.forEach(function(el) {
+            el.addEventListener('click', function() {
+                var dateValue = el.getAttribute('data-date');
+                if (el.classList.contains('ring')) {
+                    el.classList.remove('ring');
+                    selectedDates = selectedDates.filter(function(d) { return d !== dateValue; });
+                } else {
+                    el.classList.add('ring');
+                    selectedDates.push(dateValue);
+                }
+                validateSelection();
+            });
+        });
+
+        openButton.addEventListener('click', function() {
+            if (formCard.classList.contains('d-none')) {
+                formCard.classList.remove('d-none');
+                formCard.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+        });
+    })();
+</script>
+{% endblock %}

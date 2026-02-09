@@ -1,0 +1,88 @@
+{% extends 'base.html' %}
+{% block title %}Aletler - ToolShare{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h4><i class="bi bi-tools"></i> Aletler</h4>
+    <a href="{% url 'tool_create' %}" class="btn btn-primary">
+        <i class="bi bi-plus-lg"></i> Yeni Alet Ekle
+    </a>
+</div>
+
+<div class="card mb-4">
+    <div class="card-body">
+        <form method="get" class="row g-3">
+            <div class="col-md-4">
+                <input type="text" name="search" class="form-control" placeholder="Alet ara..." value="{{ search_query }}">
+            </div>
+            <div class="col-md-3">
+                <select name="category" class="form-select">
+                    <option value="">Tüm Kategoriler</option>
+                    {% for cat in categories %}
+                    <option value="{{ cat.id }}" {% if selected_category == cat.id|stringformat:"s" %}selected{% endif %}>{{ cat.name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="col-md-3">
+                <select name="status" class="form-select">
+                    <option value="">Tüm Durumlar</option>
+                    <option value="available" {% if selected_status == 'available' %}selected{% endif %}>Müsait</option>
+                    <option value="reserved" {% if selected_status == 'reserved' %}selected{% endif %}>Rezerve</option>
+                    <option value="maintenance" {% if selected_status == 'maintenance' %}selected{% endif %}>Bakımda</option>
+                </select>
+            </div>
+            <div class="col-md-2">
+                <button type="submit" class="btn btn-outline-primary w-100">
+                    <i class="bi bi-search"></i> Ara
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-body">
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th>Alet Adı</th>
+                    <th>Puan</th>
+                    <th>Kategori</th>
+                    <th>Sahip</th>
+                    <th>Günlük Ücret</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for tool in tools %}
+                <tr>
+                    <td>
+                        <a class="text-decoration-none" href="{% url 'tool_detail' tool.id %}">
+                            <strong class="text-{{ tool.category_color }}">{{ tool.name }}</strong>
+                        </a>
+                    </td>
+                    <td>
+                        {% if tool.average_score > 0 %}
+                        <span class="badge bg-info">
+                            <i class="bi bi-star-fill"></i> {{ tool.average_score|floatformat:1 }}/5
+                        </span>
+                        {% else %}
+                        <span class="text-muted">Puan yok</span>
+                        {% endif %}
+                    </td>
+                    <td>{{ tool.category.name }}</td>
+                    <td>{{ tool.owner.username }}</td>
+                    <td>{{ tool.daily_price }} TL</td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="5" class="text-center text-muted py-4">
+                        <i class="bi bi-inbox display-6"></i>
+                        <p class="mt-2">Henüz alet eklenmemiş</p>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,7 @@
+Linux Ubuntu 22.04
+ROS2 Humble
+PX4 SITL 1.16
+GAZEBO HARMONIC
+Octomap ros2 paketi
+Nav2 ros2 paketi
+

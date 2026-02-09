@@ -1,0 +1,26 @@
+cd ~
+git clone --recurse-submodules https://github.com/batoddy/UAV-Indoor-Exploration.git
+cd UAV-Indoor-Exploration
+
+sudo apt update
+sudo apt install -y git python3-pip python3-rosdep python3-colcon-common-extensions
+
+cd ~/UAV-Indoor-Exploration
+colcon build --symlink-install
+source install/setup.bash
+
+PX4 dünya ayağa kaldırma,
+QGC ayapa kaldırma,
+
+# Terminal 1: Start OctoMap server (converts PointCloud to 2D map)
+ros2 launch uav_navigation navigation.launch.py use_sim_time:=true
+
+# Terminal 2: Start frontier detection pipeline
+ros2 launch frontier_exploration frontier_exploration.launch.py use_sim_time:=true
+
+# Terminal 3: Start exploration planner (path planning + trajectory following)
+ros2 launch exploration_planner exploration_planner.launch.py use_sim_time:=true rviz:=true
+
+# Terminal 4: Start PX4 bridge (cmd_vel → PX4 commands)
+ros2 launch cmd_vel_to_px4 px4_bridge.launch.py
+

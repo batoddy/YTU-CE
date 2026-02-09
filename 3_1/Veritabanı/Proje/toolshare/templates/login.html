@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+{% block title %}Giriş - ToolShare{% endblock %}
+
+{% block auth_content %}
+<div class="min-vh-100 d-flex align-items-center justify-content-center" style="background: linear-gradient(135deg, #2563eb, #1e40af);">
+    <div class="card shadow-lg" style="width: 400px;">
+        <div class="card-body p-5">
+            <div class="text-center mb-4">
+                <i class="bi bi-tools display-4 text-primary"></i>
+                <h2 class="mt-2">ToolShare</h2>
+                <p class="text-muted">Mahalle Alet Paylaşım Sistemi</p>
+            </div>
+
+            {% if messages %}
+                {% for message in messages %}
+                <div class="alert alert-{{ message.tags|default:'info' }} alert-dismissible fade show" role="alert">
+                    {{ message }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
+                {% endfor %}
+            {% endif %}
+
+            <form method="post">
+                {% csrf_token %}
+                <div class="mb-3">
+                    <label class="form-label">Kullanıcı Adı</label>
+                    <div class="input-group">
+                        <span class="input-group-text"><i class="bi bi-person"></i></span>
+                        <input type="text" name="username" class="form-control" required>
+                    </div>
+                </div>
+                <div class="mb-4">
+                    <label class="form-label">Şifre</label>
+                    <div class="input-group">
+                        <span class="input-group-text"><i class="bi bi-lock"></i></span>
+                        <input type="password" name="password" class="form-control" required>
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-primary w-100 py-2">
+                    <i class="bi bi-box-arrow-in-right"></i> Giriş Yap
+                </button>
+            </form>
+
+            <hr class="my-4">
+            <p class="text-center text-muted mb-0">
+                Hesabınız yok mu? <a href="{% url 'register' %}">Kayıt Ol</a>
+            </p>
+        </div>
+    </div>
+</div>
+{% endblock %}
